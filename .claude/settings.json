@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "deny": [
+      "mcp__SeePM__change_platform",
+      "mcp__SeePM__run_seepm_change",
+      "mcp__SeePM__brain_write",
+      "mcp__SeePM__brain_review",
+      "mcp__SeePM__build_brain",
+      "mcp__SeePM__refresh_brain_from_accounts",
+      "mcp__SeePM__create_client",
+      "mcp__SeePM__update_client",
+      "mcp__SeePM__link_ad_account",
+      "mcp__SeePM__connect_platform",
+      "mcp__SeePM__set_budget_alert",
+      "mcp__SeePM__create_upload_link",
+      "mcp__SeePM__finish_upload",
+      "mcp__SeePM__save_my_profile"
+    ]
+  }
+}

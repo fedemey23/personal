@@ -1,0 +1,317 @@
+<title>Pulso de conversiones</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a status board. Summary strip on top, then one block per client with one row per
+   conversion: state pill | what it is and why it's flagged | 5-week activity bars. */
+:root {
+  --bg: #f5f6f3;
+  --panel: #ffffff;
+  --ink: #16201d;
+  --ink-2: #4d5955;
+  --ink-3: #7b8682;
+  --line: #dfe3df;
+  --bar: #aab4b0;
+  --accent: #1f6f63;
+  --good: #0ca30c;
+  --warning: #c98a00;
+  --critical: #d03b3b;
+  --info: #2a78d6;
+  --muted-pill: #e9ecea;
+  --font-ui: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111715; --panel: #18201d; --ink: #e8eeeb; --ink-2: #b2bdb8; --ink-3: #85918c;
+    --line: #2a3430; --bar: #55625d; --accent: #4fb3a2; --good: #2fbf2f; --warning: #fab219;
+    --critical: #e66767; --info: #5598e7; --muted-pill: #232c29; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111715; --panel: #18201d; --ink: #e8eeeb; --ink-2: #b2bdb8; --ink-3: #85918c;
+  --line: #2a3430; --bar: #55625d; --accent: #4fb3a2; --good: #2fbf2f; --warning: #fab219;
+  --critical: #e66767; --info: #5598e7; --muted-pill: #232c29; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-ui); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+h1, h2 { text-wrap: balance; margin: 0; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+
+header.top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; }
+.brand h1 { font-size: 30px; font-weight: 700; letter-spacing: -0.01em; }
+.brand p { margin: 2px 0 0; color: var(--ink-2); }
+.readonly { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+.readonly svg { width: 13px; height: 13px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--panel); }
+.seg button { font: inherit; font-size: 13px; padding: 6px 12px; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel); }
+.seg button:focus-visible, .toggle input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); cursor: pointer; }
+.toggle input { accent-color: var(--accent); }
+
+.client { display: flex; flex-direction: column; gap: 12px; }
+.client-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px;
+  border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
+.client-head h2 { font-size: 22px; font-weight: 700; }
+.client-head .meta { color: var(--ink-3); font-size: 13px; }
+.tally { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  border-radius: 999px; padding: 3px 10px 3px 8px; background: var(--muted-pill); color: var(--ink); white-space: nowrap; }
+.pill .dot { width: 10px; height: 10px; flex: none; }
+.pill.caida .dot { fill: var(--critical); }
+.pill.atencion .dot { fill: var(--warning); }
+.pill.ok .dot { fill: var(--good); }
+.pill.nueva .dot { fill: var(--info); }
+.pill.sin_senal .dot, .pill.sin_entrega .dot { fill: var(--ink-3); }
+
+.rows { display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+.row { display: grid; grid-template-columns: 128px minmax(0, 1fr) minmax(0, 360px); gap: 16px 20px; padding: 16px 18px;
+  border-left: 4px solid transparent; }
+.row + .row { border-top: 1px solid var(--line); }
+.row.caida { border-left-color: var(--critical); }
+.row.atencion { border-left-color: var(--warning); }
+.row .what { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.row .name { font-family: var(--font-data); font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.row .tags { display: flex; flex-wrap: wrap; gap: 6px 10px; font-size: 12px; color: var(--ink-3); }
+.row .tags b { font-weight: 600; color: var(--ink-2); }
+.row .headline { font-weight: 600; margin-top: 4px; }
+.row .detail { color: var(--ink-2); font-size: 14px; max-width: 62ch; }
+.row .why { font-size: 12px; color: var(--ink-3); }
+.chart { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .axis { fill: var(--ink-3); font-family: var(--font-data); font-size: 10px; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .band { fill: var(--accent); opacity: 0.08; }
+.chart .b { fill: var(--bar); }
+.chart .b.recent { fill: var(--accent); }
+.chart .zero { fill: var(--line); }
+.chart .hit { fill: transparent; cursor: crosshair; }
+.chart .hit:hover + .hl, .chart .hl.on { opacity: 1; }
+.chart .hl { fill: var(--ink); opacity: 0; pointer-events: none; }
+.kpis { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--ink-3); }
+.kpis span b { color: var(--ink); font-family: var(--font-data); font-weight: 500; }
+
+.tip { position: fixed; z-index: 20; pointer-events: none; background: var(--ink); color: var(--panel); font-size: 12px;
+  padding: 6px 9px; border-radius: 6px; line-height: 1.4; white-space: nowrap; }
+.tip .num { font-size: 12px; }
+
+.empty { padding: 18px; color: var(--ink-2); }
+.notes { font-size: 13px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; margin: 0; padding-left: 18px; }
+
+details.method { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+details.method summary { cursor: pointer; font-weight: 600; }
+details.method .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px 28px; margin-top: 10px; }
+details.method h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); margin: 10px 0 4px; }
+details.method p, details.method li { font-size: 14px; color: var(--ink-2); max-width: 65ch; }
+details.method ul { margin: 0; padding-left: 18px; }
+
+@media (max-width: 860px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .chart { max-width: 420px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .chart .hl { transition: opacity 80ms; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>Pulso de conversiones</h1>
+      <p id="subtitle">Estado de las conversiones principales de Google Ads y Meta</p>
+    </div>
+    <span class="readonly" title="El panel solo lee datos. No puede pausar, editar ni crear nada en las cuentas.">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 3C4.4 3 1.7 5.6 1 8c.7 2.4 3.4 5 7 5s6.3-2.6 7-5c-.7-2.4-3.4-5-7-5zm0 8a3 3 0 110-6 3 3 0 010 6zm0-1.6a1.4 1.4 0 100-2.8 1.4 1.4 0 000 2.8z"/></svg>
+      Solo lectura
+    </span>
+  </header>
+
+  <div class="filters" role="group" aria-label="Filtros">
+    <div class="seg" id="f-platform">
+      <button type="button" data-v="all" aria-pressed="true">Todas</button>
+      <button type="button" data-v="google_ads" aria-pressed="false">Google Ads</button>
+      <button type="button" data-v="meta_ads" aria-pressed="false">Meta</button>
+    </div>
+    <label class="toggle"><input type="checkbox" id="f-problems"><span>Solo lo que hay que revisar</span></label>
+  </div>
+
+  <main id="clients" class="wrap" style="gap:32px"></main>
+
+  <details class="method">
+    <summary>Cómo se calcula el estado</summary>
+    <div class="cols">
+      <div>
+        <h3>Qué es una conversión principal</h3>
+        <ul>
+          <li><b>Google Ads:</b> acciones primarias cuya meta usan para ofertar las campañas activas. Las primarias que ninguna campaña activa usa quedan afuera.</li>
+          <li><b>Meta:</b> el evento por el que optimiza cada conjunto de anuncios activo.</li>
+        </ul>
+        <h3>Ventanas</h3>
+        <p>Se comparan los últimos 7 días contra las 4 semanas anteriores. Google cuenta por fecha de conversión; los últimos 1 o 2 días todavía pueden subir.</p>
+      </div>
+      <div>
+        <h3>Estados</h3>
+        <ul>
+          <li><b>Caída:</b> con el tráfico que hubo se esperaban 4 o más conversiones y llegaron cero, o llegó menos del 40% de lo esperado.</li>
+          <li><b>Revisar:</b> lo mismo con umbrales más bajos, o un evento que nunca se registró pese a tener 100 clics o más.</li>
+          <li><b>OK:</b> en línea con su tasa habitual, o bajó en la misma proporción que el tráfico.</li>
+          <li><b>Nueva:</b> menos de 7 días de historia.</li>
+          <li><b>Poco volumen:</b> convierte tan poco que un cero no dice nada.</li>
+          <li><b>Sin entrega:</b> la campaña figura activa pero no tuvo clics en 7 días.</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA = {"clients":[{"client":"Pickit","ref_date":"2026-10-26","generated_at":"2026-10-27T19:40:00-03:00","dates":["2026-09-19","2026-09-20","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-25","2026-09-26","2026-09-27","2026-09-28","2026-09-29","2026-09-30","2026-10-01","2026-10-02","2026-10-03","2026-10-04","2026-10-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14","2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20","2026-10-21","2026-10-22","2026-10-23","2026-10-24","2026-10-25","2026-10-26"],"notes":["Meta: el volumen crudo del píxel (Pickit Pixel In House) no se leyó porque Meta limitó las consultas a la cuenta; queda para la próxima corrida.","Google: conversiones por fecha de conversión (todas las conversiones). Clics de las campañas que optimizan por cada meta."],"counts":{"caida":0,"atencion":1,"ok":8,"nueva":2,"sin_senal":2,"sin_entrega":1},"worst":"atencion","items":[{"id":"sellers_lead_calificado_pe","name":"sellers_lead_calificado_pe","group":"B2B Sellers · PE","why":"Evento de optimización del conjunto activo PE B2B","platform":"meta_ads","account_id":"act_280747187560509","account_name":"pickit - AR","since":"2026-09-24","conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"clicks":[0,0,0,0,0,2,6,1,7,5,5,7,6,5,3,4,3,4,0,3,5,0,8,2,1,5,4,3,3,7,3,3,7,7,1,2,4,4],"status":"atencion","label":"Revisar","headline":"33 días sin conversiones con tráfico","detail":"130 clics desde el 24/09 y ninguna conversión. Puede ser la campaña o la medición: conviene completar el formulario de prueba y ver si el evento llega.","rec_conv":0,"rec_clicks":28,"base_weekly":0.0,"last_seen":null,"silent_days":33,"history_days":33},{"id":"7732517673","name":"AR - Sellers - Lead Calificado","group":"B2B Sellers · AR","why":"Primaria · meta Enviar formulario de las 4 campañas Search AR activas","platform":"google_ads","account_id":"6727245662","account_name":"Pickit - AR","since":null,"conv":[0,0,0,0,0,0,1,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,2,0,0,1,0,1,1,1,0,0,2],"clicks":[26,26,87,63,80,92,63,64,51,99,67,78,87,70,59,49,12,23,19,24,14,14,15,10,15,29,43,50,43,29,58,99,78,97,83,24,14,53],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"5 en los últimos 7 días contra 2,2 por semana en las 4 anteriores. Última el 26/10.","rec_conv":5,"rec_clicks":448,"base_weekly":2.2,"last_seen":"2026-10-26","silent_days":0,"history_days":38},{"id":"926410545","name":"AR - Sellers - Lead","group":"B2B Sellers · AR","why":"Primaria · meta Enviar formulario de las 4 campañas Search AR activas","platform":"google_ads","account_id":"6727245662","account_name":"Pickit - AR","since":null,"conv":[0,1,5,6,3,3,2,1,0,3,3,6,4,3,5,2,0,1,1,3,2,0,1,2,1,0,4,5,4,2,5,3,8,4,5,0,1,3],"clicks":[26,26,87,63,80,92,63,64,51,99,67,78,87,70,59,49,12,23,19,24,14,14,15,10,15,29,43,50,43,29,58,99,78,97,83,24,14,53],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"24 en los últimos 7 días contra 18 por semana en las 4 anteriores. Última el 26/10.","rec_conv":24,"rec_clicks":448,"base_weekly":18.0,"last_seen":"2026-10-26","silent_days":0,"history_days":38},{"id":"7735155969","name":"Lead calificado - MX","group":"B2B Sellers · MX","why":"Primaria · meta Reservar cita de las 3 campañas Search MX activas","platform":"google_ads","account_id":"6727245662","account_name":"Pickit - AR","since":null,"conv":[0,0,1,1,2,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,3,1,1,0,0,1],"clicks":[54,69,91,140,104,82,123,75,71,62,62,64,76,52,44,52,29,28,33,40,25,19,23,35,25,29,54,41,26,33,54,47,54,52,41,46,52,69],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"6 en los últimos 7 días contra 2 por semana en las 4 anteriores. Última el 26/10.","rec_conv":6,"rec_clicks":361,"base_weekly":2.0,"last_seen":"2026-10-26","silent_days":0,"history_days":38},{"id":"7735208793","name":"MX - Sellers - Lead","group":"B2B Sellers · MX","why":"Primaria · meta Reservar cita de las 3 campañas Search MX activas","platform":"google_ads","account_id":"6727245662","account_name":"Pickit - AR","since":null,"conv":[1,1,2,2,2,0,4,0,2,0,1,5,4,0,1,1,1,0,3,0,2,1,1,4,1,1,2,1,1,0,3,3,7,6,5,1,1,3],"clicks":[54,69,91,140,104,82,123,75,71,62,62,64,76,52,44,52,29,28,33,40,25,19,23,35,25,29,54,41,26,33,54,47,54,52,41,46,52,69],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"26 en los últimos 7 días contra 10,8 por semana en las 4 anteriores. Última el 26/10.","rec_conv":26,"rec_clicks":361,"base_weekly":10.8,"last_seen":"2026-10-26","silent_days":0,"history_days":38},{"id":"sellers_lead_calificado_ar","name":"sellers_lead_calificado_ar","group":"B2B Sellers · AR","why":"Evento de optimización del conjunto activo de Hunting & Same Day","platform":"meta_ads","account_id":"act_280747187560509","account_name":"pickit - AR","since":null,"conv":[0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0],"clicks":[12,13,14,16,14,16,17,13,13,30,26,23,14,5,5,6,12,14,24,16,11,21,17,18,31,41,33,32,15,24,21,21,30,31,17,22,33,27],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"1 en los últimos 7 días contra 1,5 por semana en las 4 anteriores. Última el 21/10.","rec_conv":1,"rec_clicks":181,"base_weekly":1.5,"last_seen":"2026-10-21","silent_days":5,"history_days":38},{"id":"sellers_lead_calificado_mx","name":"sellers_lead_calificado_mx","group":"B2B Sellers · MX","why":"Evento de optimización del conjunto activo MX Hunting","platform":"meta_ads","account_id":"act_280747187560509","account_name":"pickit - AR","since":null,"conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0],"clicks":[4,11,1,5,2,0,2,3,0,1,6,3,1,1,2,1,3,7,3,1,2,2,2,5,2,0,3,2,2,12,8,11,9,14,6,3,11,15],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"1 en los últimos 7 días contra 0,2 por semana en las 4 anteriores. Última el 20/10.","rec_conv":1,"rec_clicks":69,"base_weekly":0.2,"last_seen":"2026-10-20","silent_days":6,"history_days":38},{"id":"ar_tn_onboarding_conversion","name":"ar_tn_onboarding_conversion","group":"C2C Tienda Nube · AR","why":"Evento de optimización de 2 conjuntos activos (C2C Tienda Nube)","platform":"meta_ads","account_id":"act_280747187560509","account_name":"pickit - AR","since":null,"conv":[1,0,2,1,1,1,0,2,2,2,1,1,1,0,0,0,1,0,2,0,1,0,0,4,1,1,2,0,0,0,1,0,1,1,0,1,4,0],"clicks":[112,119,131,112,130,115,63,118,126,112,118,80,98,38,19,12,36,61,117,89,57,84,78,128,98,77,103,84,67,47,87,91,139,133,96,126,111,173],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"7 en los últimos 7 días contra 6,2 por semana en las 4 anteriores. Última el 25/10.","rec_conv":7,"rec_clicks":869,"base_weekly":6.2,"last_seen":"2026-10-25","silent_days":1,"history_days":38},{"id":"lead_calificado_puntos_ar","name":"lead_calificado_puntos_ar","group":"Puntos · AR","why":"Evento de optimización de 5 conjuntos activos (Reemplazo ML y Same Day)","platform":"meta_ads","account_id":"act_280747187560509","account_name":"pickit - AR","since":"2026-10-06","conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,53,46,34,35,29,32,34,31,30,28,24,22,38,25,31,30,21,24,17,31],"clicks":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,313,538,514,412,407,406,505,421,400,315,268,264,239,386,303,306,304,250,250,325,332],"status":"ok","label":"OK","headline":"En línea con su historial","detail":"179 en los últimos 7 días contra 234 por semana en las 4 anteriores. Última el 26/10.","rec_conv":179,"rec_clicks":2070,"base_weekly":234.0,"last_seen":"2026-10-26","silent_days":0,"history_days":21},{"id":"formulario_completo_camionetas_mx","name":"formulario_completo_camionetas_mx","group":"Pickers · Rentals MX","why":"Evento de optimización de 2 conjuntos activos (Rentals Tecámac y Tlalnepantla)","platform":"meta_ads","account_id":"act_4901263773324478","account_name":"pickers - AR","since":"2026-10-22","conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,25,13,9,9],"clicks":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,93,267,205,172,77],"status":"nueva","label":"Nueva","headline":"Empezó el 22/10","detail":"Lleva 5 días con 56 conversiones. Hace falta una semana de historia para compararla.","rec_conv":56,"rec_clicks":814,"base_weekly":null,"last_seen":"2026-10-26","silent_days":0,"history_days":5},{"id":"lead_calificado_camionetas_mx","name":"lead_calificado_camionetas_mx","group":"Pickers · Rentals MX","why":"Evento de optimización de 2 conjuntos activos (Rentals - LEAD)","platform":"meta_ads","account_id":"act_4901263773324478","account_name":"pickers - AR","since":"2026-10-26","conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5],"clicks":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,180],"status":"nueva","label":"Nueva","headline":"Empezó el 26/10","detail":"Lleva 1 día con 5 conversiones. Hace falta una semana de historia para compararla.","rec_conv":5,"rec_clicks":180,"base_weekly":null,"last_seen":"2026-10-26","silent_days":0,"history_days":1},{"id":"7737562471","name":"PE - Sellers - Lead Calificado","group":"B2B Sellers · PE","why":"Primaria · meta Agregar al carrito de la campaña PE Latam activa","platform":"google_ads","account_id":"6727245662","account_name":"Pickit - AR","since":null,"conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"clicks":[0,0,0,0,0,0,0,1,1,0,2,0,0,1,2,4,1,1,4,2,0,1,0,1,0,3,2,4,0,0,3,1,1,0,3,2,1,0],"status":"sin_senal","label":"Poco volumen","headline":"Volumen demasiado bajo para evaluar","detail":"41 clics desde el 26/09 y ninguna conversión. La última fue el 10/09. Con tan poco tráfico un cero no indica una rotura.","rec_conv":0,"rec_clicks":8,"base_weekly":0.0,"last_seen":"2026-09-10","silent_days":31,"history_days":31},{"id":"7737413717","name":"PE - Sellers - Lead","group":"B2B Sellers · PE","why":"Primaria · meta Agregar al carrito de la campaña PE Latam activa","platform":"google_ads","account_id":"6727245662","account_name":"Pickit - AR","since":null,"conv":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"clicks":[0,0,0,0,0,0,0,1,1,0,2,0,0,1,2,4,1,1,4,2,0,1,0,1,0,3,2,4,0,0,3,1,1,0,3,2,1,0],"status":"sin_senal","label":"Poco volumen","headline":"Convierte menos de una vez por semana","detail":"Última conversión el 04/10, con 30 clics desde entonces. Con este volumen una semana en cero es normal.","rec_conv":0,"rec_clicks":8,"base_weekly":0.3,"last_seen":"2026-10-04","silent_days":22,"history_days":31},{"id":"mobile_app_install","name":"Instalaciones de la app (mobile_app_install)","group":"Pickers · AR","why":"Evento de optimización de 18 conjuntos activos de Installs","platform":"meta_ads","account_id":"act_4901263773324478","account_name":"pickers - AR","since":null,"conv":[19,36,34,25,8,10,12,8,3,7,10,8,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"clicks":[780,1234,919,451,73,54,99,125,112,171,85,98,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"status":"sin_entrega","label":"Sin entrega","headline":"La campaña no está entregando","detail":"Sin clics en los últimos 7 días. Los conjuntos figuran activos pero no gastan, así que no hay nada que medir. No es un problema de medición.","rec_conv":0,"rec_clicks":0,"base_weekly":23.2,"last_seen":"2026-10-01","silent_days":25,"history_days":38}]}],"labels":{"caida":"Caída","atencion":"Revisar","ok":"OK","nueva":"Nueva","sin_senal":"Poco volumen","sin_entrega":"Sin entrega"},"order":["caida","atencion","ok","nueva","sin_senal","sin_entrega"]};
+const PLATFORM = { google_ads: "Google Ads", meta_ads: "Meta" };
+const DOT = '<svg class="dot" viewBox="0 0 10 10" aria-hidden="true">';
+const SHAPES = {
+  caida: '<path d="M5 0L10 9H0z"/>',
+  atencion: '<path d="M5 0L10 5 5 10 0 5z"/>',
+  ok: '<circle cx="5" cy="5" r="5"/>',
+  nueva: '<circle cx="5" cy="5" r="5"/>',
+  sin_senal: '<rect x="0" y="3.5" width="10" height="3" rx="1.5"/>',
+  sin_entrega: '<rect x="0" y="3.5" width="10" height="3" rx="1.5"/>',
+};
+const state = { platform: "all", problems: false };
+try {
+  const saved = JSON.parse(localStorage.getItem("pulso-filters") || "{}");
+  if (saved.platform) state.platform = saved.platform;
+  if (saved.problems) state.problems = true;
+} catch (e) {}
+
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ddmm = iso => { const [, m, d] = iso.split("-"); return `${d}/${m}`; };
+const pill = (status, text) => `<span class="pill ${status}">${DOT}${SHAPES[status]}</svg>${esc(text)}</span>`;
+
+function chart(item, dates) {
+  const W = 380, H = 92, top = 10, bottom = 18, left = 22, n = dates.length;
+  const plotH = H - top - bottom, step = (W - left) / n, bw = Math.max(2, step - 2);
+  const start = item.since ? dates.indexOf(item.since) : 0;
+  const max = Math.max(1, ...item.conv);
+  const nice = max <= 4 ? max : Math.ceil(max / 5) * 5;
+  const y = v => top + plotH - (v / nice) * plotH;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Conversiones por día de ${esc(item.name)}">`;
+  s += `<rect class="band" x="${left + (n - 7) * step}" y="${top}" width="${7 * step}" height="${plotH}"/>`;
+  s += `<line class="grid" x1="${left}" x2="${W}" y1="${y(nice)}" y2="${y(nice)}"/>`;
+  s += `<line class="grid" x1="${left}" x2="${W}" y1="${y(0)}" y2="${y(0)}"/>`;
+  s += `<text class="axis" x="${left - 5}" y="${y(nice) + 3}" text-anchor="end">${nice}</text>`;
+  s += `<text class="axis" x="${left - 5}" y="${y(0) + 3}" text-anchor="end">0</text>`;
+  dates.forEach((d, i) => {
+    const x = left + i * step + 1, v = item.conv[i], recent = i >= n - 7;
+    if (i >= start) {
+      if (v > 0) {
+        const h = Math.max(2, (v / nice) * plotH), r = Math.min(2, bw / 2);
+        s += `<path class="b${recent ? " recent" : ""}" d="M${x},${y(0)}V${y(0) - h + r}q0,-${r} ${r},-${r}h${bw - 2 * r}q${r},0 ${r},${r}V${y(0)}z"/>`;
+      } else {
+        s += `<rect class="zero" x="${x}" y="${y(0) - 2}" width="${bw}" height="2"/>`;
+      }
+    }
+    s += `<rect class="hit" data-i="${i}" x="${left + i * step}" y="${top}" width="${step}" height="${plotH + 2}"/>`;
+    s += `<rect class="hl" x="${x}" y="${y(0) + 3}" width="${bw}" height="2"/>`;
+  });
+  s += `<text class="axis" x="${left + 1}" y="${H - 3}">${ddmm(dates[0])}</text>`;
+  s += `<text class="axis" x="${W}" y="${H - 3}" text-anchor="end">${ddmm(dates[n - 1])}</text>`;
+  return s + "</svg>";
+}
+
+function row(item, dates) {
+  const fmt = v => (v == null ? "–" : String(v).replace(".", ","));
+  return `<article class="row ${item.status}" data-client-item>
+    <div>${pill(item.status, item.label)}</div>
+    <div class="what">
+      <div class="name">${esc(item.name)}</div>
+      <div class="tags"><b>${PLATFORM[item.platform]}</b><span>${esc(item.account_name)}</span><span>${esc(item.group)}</span></div>
+      <div class="headline">${esc(item.headline)}</div>
+      <div class="detail">${esc(item.detail)}</div>
+      <div class="why">${esc(item.why)}</div>
+    </div>
+    <div class="chart" data-chart>
+      ${chart(item, dates)}
+      <div class="kpis">
+        <span><svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><rect width="9" height="9" rx="2" fill="var(--accent)"/></svg> 7 días <b>${item.rec_conv}</b></span>
+        <span>prom. semanal <b>${fmt(item.base_weekly)}</b></span>
+        <span>última <b>${item.last_seen ? ddmm(item.last_seen) : "–"}</b></span>
+      </div>
+    </div>
+  </article>`;
+}
+
+function render() {
+  const root = document.getElementById("clients");
+  if (!DATA) { root.innerHTML = '<p class="empty">Todavía no hay datos. Corré pulso.py con un snapshot.</p>'; return; }
+  const ref = DATA.clients.map(c => c.ref_date).sort().pop();
+  document.getElementById("subtitle").textContent =
+    `Conversiones principales de Google Ads y Meta · datos hasta el ${ddmm(ref)}`;
+  root.innerHTML = DATA.clients.map((c, ci) => {
+    const items = c.items.filter(it =>
+      (state.platform === "all" || it.platform === state.platform) &&
+      (!state.problems || it.status === "caida" || it.status === "atencion"));
+    const tally = DATA.order.filter(s => c.counts[s]).map(s => pill(s, `${c.counts[s]} ${DATA.labels[s]}`)).join("");
+    const body = items.length
+      ? `<div class="rows">${items.map(it => row(it, c.dates)).join("")}</div>`
+      : `<div class="rows"><p class="empty">Nada para revisar con estos filtros.</p></div>`;
+    const notes = c.notes.length ? `<ul class="notes">${c.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
+    return `<section class="client" data-ci="${ci}">
+      <div class="client-head"><h2>${esc(c.client)}</h2>
+        <span class="meta">Datos hasta el ${ddmm(c.ref_date)}</span>
+        <div class="tally">${tally}</div></div>
+      ${body}${notes}</section>`;
+  }).join("");
+  root.querySelectorAll("section.client").forEach(sec => {
+    const c = DATA.clients[+sec.dataset.ci];
+    const items = c.items.filter(it =>
+      (state.platform === "all" || it.platform === state.platform) &&
+      (!state.problems || it.status === "caida" || it.status === "atencion"));
+    sec.querySelectorAll("[data-chart]").forEach((el, k) => bindTip(el, items[k], c.dates));
+  });
+  document.querySelectorAll("#f-platform button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === state.platform)));
+  document.getElementById("f-problems").checked = state.problems;
+}
+
+const tip = document.getElementById("tip");
+function bindTip(el, item, dates) {
+  el.addEventListener("pointermove", e => {
+    const hit = e.target.closest(".hit");
+    if (!hit) { tip.hidden = true; return; }
+    const i = +hit.dataset.i, d = dates[i];
+    const before = item.since && d < item.since;
+    tip.innerHTML = before
+      ? `${ddmm(d)} · <span>sin campaña todavía</span>`
+      : `${ddmm(d)} · <b class="num">${item.conv[i]}</b> conv. · <span class="num">${item.clicks[i]}</span> clics`;
+    tip.hidden = false;
+    const x = Math.min(e.clientX + 12, window.innerWidth - tip.offsetWidth - 8);
+    tip.style.left = x + "px";
+    tip.style.top = (e.clientY - tip.offsetHeight - 10) + "px";
+  });
+  el.addEventListener("pointerleave", () => { tip.hidden = true; });
+}
+
+function save() { try { localStorage.setItem("pulso-filters", JSON.stringify(state)); } catch (e) {} }
+document.getElementById("f-platform").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  state.platform = b.dataset.v; save(); render();
+});
+document.getElementById("f-problems").addEventListener("change", e => { state.problems = e.target.checked; save(); render(); });
+render();
+</script>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pulso semanal: evalúa las conversiones por las que optimizan las campañas y arma el mail.
+"""Auditoría semanal de conversiones: evalúa las conversiones por las que optimizan las campañas y arma el mail.
 
 Uso:
   python3 pulso.py data/<cliente>/<fecha>.json [más clientes...] [-o mail.md]
@@ -201,14 +201,14 @@ def render_html(clients, week, counts):
         '<!doctype html><html lang="es"><head><meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width,initial-scale=1">',
         '<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">',
-        f'<title>Pulso semanal</title></head><body style="margin:0;padding:0;background:{Z["bg"]}">',
+        f'<title>Auditoría semanal de conversiones</title></head><body style="margin:0;padding:0;background:{Z["bg"]}">',
         f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{Z["bg"]}">',
         '<tr><td align="center" style="padding:24px 12px">',
         f'<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;'
         f'font-family:{Z["body"]};color:{Z["ink"]};font-size:14.5px;line-height:1.6">',
         '<tr><td style="padding:0 32px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>',
         f'<td style="font-family:{Z["logo_font"]};font-size:22px;letter-spacing:-.02em;color:{Z["logo"]}">zenda.</td>',
-        f'<td align="right">{mono("pulso semanal /")}</td></tr></table></td></tr>',
+        f'<td align="right">{mono("auditoría semanal /")}</td></tr></table></td></tr>',
         f'<tr><td style="padding:14px 32px 28px">{rule}</td></tr>',
         f'<tr><td style="padding:0 32px">{mono(f"semana del {ddmm(week[0])} al {ddmm(week[1])}")}',
         f'<h1 style="margin:6px 0 14px;font-family:{Z["display"]};font-size:34px;line-height:1.08;'
@@ -244,7 +244,7 @@ def main():
     clients.sort(key=lambda c: c[0])
 
     alerts = counts["caida"] + counts["revisar"]
-    subject = (f"Pulso semanal {ddmm(week[0])} al {ddmm(week[1])}: "
+    subject = (f"Auditoría semanal de conversiones {ddmm(week[0])} al {ddmm(week[1])}: "
                + (f"{alerts} {'conversión para revisar' if alerts == 1 else 'conversiones para revisar'}"
                   if alerts else "todo en orden"))
     summary = " · ".join(f"{ICON[s]} {counts[s]} {LABEL[s]}" for s in ORDER if counts[s])

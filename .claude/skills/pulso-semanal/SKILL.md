@@ -3,7 +3,7 @@ name: pulso-semanal
 description: Revisión semanal de solo lectura de las conversiones por las que optimizan las campañas de Google Ads y Meta de cada cliente en clients.json, para detectar caídas de medición o del sitio. Lee por SeePM, arma un snapshot y devuelve el mail semanal. Usar cuando pidan el pulso semanal, revisar si se rompió alguna conversión o correr el control de conversiones.
 ---
 
-# Pulso semanal de conversiones
+# Auditoría semanal de conversiones
 
 Solo lectura. Usar únicamente `list_accounts`, `brain_read`, `get_client_card` y `read_platform_data` de SeePM. Nunca `change_platform`, `run_seepm_change` ni `brain_write`: `.claude/settings.json` las bloquea igual.
 

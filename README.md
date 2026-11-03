@@ -1,4 +1,4 @@
-# Pulso de conversiones
+# Auditoría semanal de conversiones
 
 Revisión semanal de solo lectura de las conversiones por las que optimizan las campañas de Google Ads y Meta, separada por cliente. Sirve para detectar caídas de medición o del sitio sin revisar las cuentas todos los días.
 

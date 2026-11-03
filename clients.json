@@ -68,6 +68,99 @@
         }
       ],
       "notes": "Conversiones elegidas por el equipo. Las acciones las administra el MCC 4189571982: filtrar por nombre, no por resource name. Meta sin inversión desde jul-26."
+    },
+    {
+      "slug": "sancor-seguros",
+      "name": "Sancor Seguros",
+      "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "5007040612",
+          "name": "GSS - SS - Auto"
+        },
+        {
+          "platform": "google_ads",
+          "account_id": "2037698623",
+          "name": "GSS - SS - Cotizadores AP"
+        },
+        {
+          "platform": "google_ads",
+          "account_id": "8123765599",
+          "name": "GSS - SS - Productos"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_1498792123672622",
+          "name": "Sancor Seguros - LCB"
+        }
+      ],
+      "google_ads_goal_actions": {
+        "5007040612 REQUEST_QUOTE/WEBSITE": {
+          "name": "Auto - Cotizacion Completa - Pixel AdWords"
+        },
+        "2037698623 SUBMIT_LEAD_FORM+CONTACT/WEBSITE": {
+          "match": "conversion_action_name LIKE '%Cotizacion Completa%'",
+          "name": "AP - Cotizacion Completa (3 planes)",
+          "pending": "confirmar con el equipo: la campaña también optimiza por los Paso 3"
+        },
+        "8123765599 CONTACT/WEBSITE (VAI)": {
+          "name": "Contacto - Campaña Vida + Ahorro - Pixel AdWords"
+        },
+        "8123765599 PURCHASE/WEBSITE (Movilidad)": {
+          "name": "Movilidad - Paso 4 - Venta Completa - Pixel AdWords"
+        }
+      },
+      "notes": "Agro Demand Gen y las campañas de tráfico/alcance de Meta (FAL, Energy Teaser, CyberMonday Teaser) no tienen conversión de optimización. TikTok fuera de alcance."
+    },
+    {
+      "slug": "prevencion-salud",
+      "name": "Prevención Salud",
+      "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "4795895040",
+          "name": "GSS - PS - Marca"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_1384389785165972",
+          "name": "Prevención Salud - LCB"
+        }
+      ],
+      "google_ads_goal_actions": {
+        "4795895040 CONTACT/WEBSITE": {
+          "name": "Pixel AdWords - Paso 4 - Cotización Completa",
+          "excluded": "Pixel AdWords - Paso 2 - Cotización (paso intermedio)"
+        },
+        "4795895040 MESSAGE_LEAD/GOOGLE_HOSTED": {
+          "name": "Conversación iniciada"
+        }
+      },
+      "notes": "Forms Leads no trae 'results' en insights: leer actions 'lead'. Píxel bloqueado por Meta desde el 24/09 (ver brain measurement.md)."
+    },
+    {
+      "slug": "prevencion-retiro",
+      "name": "Prevención Retiro",
+      "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "5324690639",
+          "name": "GSS - PR - Línea Crédito GSS"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_502914543864282",
+          "name": "Prevención Retiro - LCB"
+        }
+      ],
+      "google_ads_goal_actions": {
+        "5324690639 CONTACT/WEBSITE": {
+          "name": "Pixel Google Ads - Contacto"
+        }
+      }
     }
   ]
 }

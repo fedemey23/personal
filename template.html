@@ -208,7 +208,7 @@ function conv(item) {
     <div>
       <div class="head">${tag(item.level, item.title)}<span class="name">${esc(item.name)}</span></div>
       <div class="sub">${esc(item.platform)} · ${esc(item.group)} · ${esc(item.campaigns.join(", "))}</div>
-      <p class="why">${esc(item.why)}</p>
+      <p class="why">${esc(item.why)}${item.note ? ` <strong>${esc(item.note)}</strong>` : ""}</p>
     </div>
     <div class="spark">
       <div><span class="val num">${fmt(item.weeks.at(-1))}</span> <small>esta semana · ${item.recent

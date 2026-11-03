@@ -1,0 +1,21 @@
+{
+ "client": "Prevención Salud",
+ "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
+ "week": ["2026-10-27", "2026-11-02"],
+ "week_starts": ["2026-09-29", "2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"],
+ "conversions": [
+  {"id": "meta:559938021573176", "name": "PS - Paso 3 - Confirmacion", "platform": "meta_ads", "account_id": "act_1384389785165972", "group": "Cotizador",
+   "campaigns": ["PS_PS_FB_Conversiones_RMKT_2023", "PS_PS_FB_Conversiones_Intereses_2023"], "weeks": [0, 0, 0, 0, 0], "clicks": [1257, 6366, 12512, 5594, 287],
+   "note": "Causa conocida: Meta bloquea el dominio del cotizador desde el 24/09 y el reclamo se envió el 13/10. Las campañas optimizan sin señal."},
+  {"id": "gads:428638548", "name": "Pixel AdWords - Paso 4 - Cotización Completa", "platform": "google_ads", "account_id": "4795895040", "group": "Cotizador",
+   "campaigns": ["PS_PS_GL_Search_Brand_Cotizaciones_2022", "PS_PS_GL_ZonaNOA_DemandGen_Trafico_2026"], "weeks": [297, 202, 240, 366, 419], "clicks": [557, 479, 601, 641, 607],
+   "daily": {"conv": [60, 65, 65, 58, 54, 54, 63], "clicks": [102, 115, 104, 69, 18, 24, 175]}},
+  {"id": "gads:conversacion_iniciada", "name": "Conversación iniciada", "platform": "google_ads", "account_id": "4795895040", "group": "WhatsApp ION",
+   "campaigns": ["PS_Search_PlanION_MessageAds"], "since": "2026-11-02", "weeks": [0, 0, 0, 0, 6], "clicks": [0, 0, 0, 0, 25],
+   "note": "Hasta el 28/10 llegaban unas 60 por día desde otra campaña que ya no está activa."},
+  {"id": "meta:forms_leads", "name": "Leads de formulario instantáneo", "platform": "meta_ads", "account_id": "act_1384389785165972", "group": "Forms Leads",
+   "campaigns": ["PS_PS_FB_Forms_Leads_2024_Performance"], "weeks": [11, 9, 11, 10, 10], "clicks": [149, 100, 92, 149, 116]},
+  {"id": "meta:messaging_conversation_started", "name": "Conversaciones de WhatsApp iniciadas", "platform": "meta_ads", "account_id": "act_1384389785165972", "group": "WhatsApp",
+   "campaigns": ["PS_Whatsapp_ION_2026_Performance_Mensajes_2datos", "PS_PS_FB_Whatsapp_CMA_2026_Leads - v2"], "weeks": [13, 64, 99, 84, 80], "clicks": [174, 1156, 938, 848, 802]}
+ ]
+}

@@ -59,8 +59,8 @@ def evaluate(item, week_start):
             return res("rojo", "En cero esta semana",
                        f"Cero conversiones con {miles(last_clicks)} clics; con su tasa habitual se esperaban "
                        f"unas {n(expected)}. Revisar el tag o el formulario.")
-        if weekly < 1:
-            return res("gris", "Sin lectura", f"Convierte menos de una vez por semana ({n(weekly)} de promedio).")
+        return res("gris", "Sin lectura", f"Cero esta semana, pero con su volumen se esperaban menos de 3 "
+                                          f"({n(weekly)} por semana de promedio).")
 
     daily = item.get("daily")
     if daily:
@@ -94,7 +94,8 @@ def build(paths):
         week = snap["week"]
         start = date.fromisoformat(week[0])
         items = [{"name": i["name"], "platform": PLATFORM[i["platform"]], "group": i["group"],
-                  "campaigns": i["campaigns"], "weeks": i["weeks"], "clicks": i["clicks"], **evaluate(i, start)}
+                  "campaigns": i["campaigns"], "weeks": i["weeks"], "clicks": i["clicks"], "note": i.get("note"),
+                  **evaluate(i, start)}
                  for i in snap["conversions"]]
         items.sort(key=lambda i: (LEVELS.index(i["level"]), i["platform"], i["group"]))
         clients.append({"client": snap["client"], "level": items[0]["level"], "items": items})

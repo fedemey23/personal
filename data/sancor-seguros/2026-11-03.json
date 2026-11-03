@@ -1,0 +1,33 @@
+{
+ "client": "Sancor Seguros",
+ "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
+ "week": ["2026-10-27", "2026-11-02"],
+ "week_starts": ["2026-09-29", "2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"],
+ "conversions": [
+  {"id": "gads:228778980", "name": "Auto - Cotizacion Completa", "platform": "google_ads", "account_id": "5007040612", "group": "Auto",
+   "campaigns": ["SS_Auto Search y PMax (5)"], "weeks": [201, 264, 216, 191, 218], "clicks": [7931, 10442, 7991, 8091, 7739],
+   "daily": {"conv": [31, 28, 30, 35, 38, 24, 32], "clicks": [1234, 1133, 1188, 1088, 783, 877, 1436]}},
+  {"id": "gads:ap_cotizacion_completa", "name": "AP - Cotizacion Completa (3 planes)", "platform": "google_ads", "account_id": "2037698623", "group": "Accidentes Personales",
+   "campaigns": ["[Search] cotizador-ap - Generico - Experimento"], "weeks": [39, 69, 65, 67, 56], "clicks": [1907, 2547, 1700, 1462, 1809],
+   "daily": {"conv": [6, 3, 7, 9, 5, 8, 18], "clicks": [232, 284, 231, 279, 240, 381, 162]},
+   "note": "A confirmar: la campaña optimiza también por los Paso 3."},
+  {"id": "gads:246175663", "name": "Contacto - Campaña Vida + Ahorro", "platform": "google_ads", "account_id": "8123765599", "group": "Vida Ahorro Inversión",
+   "campaigns": ["SS_VAI Search Brand, Not Brand y PMax"], "weeks": [96, 88, 131, 96, 99], "clicks": [1085, 1420, 1231, 962, 935],
+   "daily": {"conv": [17, 19, 10, 18, 12, 9, 14], "clicks": [139, 170, 116, 125, 120, 77, 188]}},
+  {"id": "gads:movilidad_paso4", "name": "Movilidad - Paso 4 - Venta Completa", "platform": "google_ads", "account_id": "8123765599", "group": "Movilidad",
+   "campaigns": ["SS_Movilidad Search Brand, NotBrand y PMax"], "weeks": [30, 95, 28, 59, 55], "clicks": [1702, 1332, 854, 1493, 989],
+   "daily": {"conv": [10, 10, 9, 13, 5, 1, 7], "clicks": [107, 121, 131, 145, 126, 79, 280]}},
+  {"id": "meta:1097231273985927", "name": "SS - Moto - Paso 2 - Cotizacion", "platform": "meta_ads", "account_id": "act_1498792123672622", "group": "Moto",
+   "campaigns": ["SS_Moto_FB_Conversiones_2023"], "weeks": [21, 17, 20, 9, 8], "clicks": [106, 140, 85, 86, 53]},
+  {"id": "meta:auto_p2_cotizacion", "name": "auto_p2_cotizacion", "platform": "meta_ads", "account_id": "act_1498792123672622", "group": "Auto",
+   "campaigns": ["SS_Auto_FB_Conversiones_RMKT_2023"], "weeks": [32, 27, 33, 18, 27], "clicks": [836, 2420, 2279, 2236, 2507]},
+  {"id": "meta:188388321721044", "name": "SS - Contacto Vida Ahorro Inversion", "platform": "meta_ads", "account_id": "act_1498792123672622", "group": "Vida Ahorro Inversión",
+   "campaigns": ["SS_Vida Ahorro Inversion _FB_Imagen_Conversiones"], "weeks": [1, 2, 2, 1, 0], "clicks": [53, 70, 26, 41, 29]},
+  {"id": "meta:6816657778402206", "name": "Paso 2 - Lead - Movilidad", "platform": "meta_ads", "account_id": "act_1498792123672622", "group": "Movilidad",
+   "campaigns": ["SS_Movilidad_Meta_Conversiones_2023"], "weeks": [49, 107, 128, 90, 96], "clicks": [650, 1481, 609, 573, 532]},
+  {"id": "meta:361858807994218", "name": "SS - AP GENERAL - Paso 8 - Cotizacion Completa", "platform": "meta_ads", "account_id": "act_1498792123672622", "group": "Accidentes Personales",
+   "campaigns": ["SS_AP_FB_Conversiones_2024"], "weeks": [70, 22, 46, 47, 42], "clicks": [578, 1207, 1031, 1308, 666]},
+  {"id": "meta:lead_caucion", "name": "lead_caucion", "platform": "meta_ads", "account_id": "act_1498792123672622", "group": "Caución de Alquiler",
+   "campaigns": ["SS_CauciónDeAlquiler_FB_Conversiones_2025"], "weeks": [15, 5, 9, 7, 4], "clicks": [93, 267, 91, 74, 76]}
+ ]
+}

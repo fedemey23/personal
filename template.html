@@ -1,0 +1,238 @@
+<title>Termómetro de conversiones</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/*__FONTS__*/
+
+/* Layout: Zenda reporting look. Header + legend, then one "renglón" per client:
+   a thermometer showing the client's worst state, next to its list of conversions. */
+:root {
+  --bg: #FAFBF9;
+  --panel: #FFFFFF;
+  --ink: #0A0A0B;
+  --mu: rgba(10,10,11,.62);
+  --bdr: #E4E5E1;
+  --gray: #F2F3F0;
+  --logo: #009444;
+  --accent: #E71CA2;
+  --bar: #CDD1CB;
+  --verde: #0E7A4E;
+  --verde-bg: rgba(89,215,162,.18);
+  --verde-fill: #59D7A2;
+  --amarillo: #8A5A00;
+  --amarillo-bg: rgba(250,178,25,.20);
+  --amarillo-fill: #FAB219;
+  --rojo: #C2334D;
+  --rojo-bg: rgba(194,51,77,.11);
+  --rojo-fill: #D03B3B;
+  --gris: rgba(10,10,11,.55);
+  --gris-bg: rgba(10,10,11,.06);
+  --gris-fill: #B9BDB6;
+  --font-display: 'Recoleta Alt', Georgia, 'Times New Roman', serif;
+  --font-body: 'Circular Std', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace, Menlo, monospace;
+  --font-logo: 'Montserrat', var(--font-body);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A0A0B; --panel: #141416; --ink: #FAFBF9; --mu: rgba(255,255,255,.6); --bdr: #2A2B2E;
+    --gray: #1C1D20; --logo: #59D7A2; --accent: #F25DBE; --bar: #3A3C40;
+    --verde: #59D7A2; --verde-bg: rgba(89,215,162,.14); --amarillo: #FAB219; --amarillo-bg: rgba(250,178,25,.14);
+    --rojo: #FF8298; --rojo-bg: rgba(255,130,152,.13); --gris: rgba(255,255,255,.55); --gris-bg: rgba(255,255,255,.08);
+    --gris-fill: #55585D; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A0A0B; --panel: #141416; --ink: #FAFBF9; --mu: rgba(255,255,255,.6); --bdr: #2A2B2E;
+  --gray: #1C1D20; --logo: #59D7A2; --accent: #F25DBE; --bar: #3A3C40;
+  --verde: #59D7A2; --verde-bg: rgba(89,215,162,.14); --amarillo: #FAB219; --amarillo-bg: rgba(250,178,25,.14);
+  --rojo: #FF8298; --rojo-bg: rgba(255,130,152,.13); --gris: rgba(255,255,255,.55); --gris-bg: rgba(255,255,255,.08);
+  --gris-fill: #55585D; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 14.5px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 64px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wrap: balance; }
+.mono { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--mu); }
+.num { font-variant-numeric: tabular-nums; }
+
+.nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1.5px solid var(--bdr); }
+.wordmark { font-family: var(--font-logo); font-weight: 400; font-size: 22px; letter-spacing: -.02em; color: var(--logo); }
+
+.hero { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: end; justify-content: space-between; }
+.hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.02; letter-spacing: -.04em; font-weight: 900; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .meta { display: flex; flex-direction: column; gap: 2px; }
+.hero p { margin: 10px 0 0; color: var(--mu); max-width: 52ch; }
+
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.legend div { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border: 1.5px solid var(--bdr); border-radius: 16px; background: var(--panel); }
+.legend b { display: block; font-size: 13.5px; }
+.legend span.t { font-size: 13px; color: var(--mu); line-height: 1.45; }
+
+.tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+.tag svg { width: 9px; height: 9px; flex: none; }
+.tag.verde { background: var(--verde-bg); color: var(--verde); }
+.tag.amarillo { background: var(--amarillo-bg); color: var(--amarillo); }
+.tag.rojo { background: var(--rojo-bg); color: var(--rojo); }
+.tag.gris { background: var(--gris-bg); color: var(--gris); }
+.tag svg { fill: currentColor; }
+
+.row { display: grid; grid-template-columns: 220px minmax(0, 1fr); border: 1.5px solid var(--bdr); border-radius: 20px; background: var(--panel); overflow: hidden; }
+.side { display: flex; gap: 16px; align-items: center; padding: 22px; border-right: 1.5px solid var(--bdr); background: var(--gray); }
+.side h2 { font-size: 26px; letter-spacing: -.02em; line-height: 1.05; }
+.side .state { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.side .count { font-size: 12.5px; color: var(--mu); }
+.thermo { width: 46px; height: 150px; flex: none; }
+.thermo .glass { fill: var(--panel); stroke: var(--bdr); stroke-width: 2; }
+.thermo .tick { stroke: var(--bdr); stroke-width: 2; }
+.thermo .mercury.verde { fill: var(--verde-fill); }
+.thermo .mercury.amarillo { fill: var(--amarillo-fill); }
+.thermo .mercury.rojo { fill: var(--rojo-fill); }
+.thermo .mercury.gris { fill: var(--gris-fill); }
+
+.convs { display: flex; flex-direction: column; min-width: 0; }
+.conv { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 8px 20px; padding: 16px 22px; align-items: center; }
+.conv + .conv { border-top: 1.5px solid var(--bdr); }
+.conv .head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.conv .name { font-family: var(--font-mono); font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.conv .sub { font-size: 12px; color: var(--mu); }
+.conv .why { margin: 4px 0 0; font-size: 13.5px; color: var(--mu); max-width: 64ch; }
+.conv .why strong { color: var(--ink); font-weight: 500; }
+.spark { display: flex; flex-direction: column; gap: 4px; }
+.spark svg { width: 100%; height: 44px; display: block; }
+.spark .b { fill: var(--bar); }
+.spark .b.verde { fill: var(--verde-fill); }
+.spark .b.amarillo { fill: var(--amarillo-fill); }
+.spark .b.rojo { fill: var(--rojo-fill); }
+.spark .b.gris { fill: var(--gris-fill); }
+.spark .zero { fill: var(--bdr); }
+.spark .lbl { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: var(--mu); }
+.spark .val { font-family: var(--font-display); font-size: 20px; line-height: 1; letter-spacing: -.02em; }
+.spark .val small { font-family: var(--font-body); font-size: 11.5px; color: var(--mu); letter-spacing: 0; }
+
+.foot { font-size: 12.5px; color: var(--mu); border-top: 1.5px solid var(--bdr); padding-top: 14px; max-width: 80ch; }
+
+@media (max-width: 760px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .side { border-right: 0; border-bottom: 1.5px solid var(--bdr); }
+  .thermo { height: 110px; width: 36px; }
+  .conv { grid-template-columns: minmax(0, 1fr); }
+  .spark { max-width: 220px; }
+}
+</style>
+
+<div class="wrap">
+  <nav class="nav"><span class="wordmark">zenda.</span><span class="mono">auditoría semanal /</span></nav>
+
+  <header class="hero">
+    <div>
+      <h1>Termómetro de <em>conversiones</em></h1>
+      <p>Las conversiones por las que optimizan las campañas de cada cliente, revisadas una vez por semana para detectar caídas de medición o del sitio.</p>
+    </div>
+    <div class="meta">
+      <span class="mono" id="week"></span>
+      <span class="mono" id="next"></span>
+    </div>
+  </header>
+
+  <section class="legend" aria-label="Qué significa cada color">
+    <div><span class="tag verde" data-shape="verde"></span><span><b>Todo bien</b><span class="t">Convierte en línea con su historial y su tráfico.</span></span></div>
+    <div><span class="tag amarillo" data-shape="amarillo"></span><span><b>Requiere atención</b><span class="t">Bajó bastante más que el tráfico. Conviene mirarla en la semana.</span></span></div>
+    <div><span class="tag rojo" data-shape="rojo"></span><span><b>Revisar ya</b><span class="t">Está en cero con tráfico. Probablemente se rompió el evento o el formulario.</span></span></div>
+  </section>
+
+  <main id="clients" class="wrap" style="gap:18px"></main>
+
+  <p class="foot">Solo lectura: se consulta SeePM y no se modifica nada en las cuentas. Se compara la última semana (martes a lunes) con las 4 anteriores, ajustando por clics, y los últimos 3 días contra el resto de la semana. Google cuenta por fecha de conversión y los eventos de app pueden llegar con un par de días de demora. Gris: volumen demasiado bajo para leer.</p>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const LABEL = { verde: "Todo bien", amarillo: "Atención", rojo: "Revisar ya", gris: "Sin lectura" };
+const SHAPE = {
+  verde: '<circle cx="5" cy="5" r="5"/>',
+  amarillo: '<path d="M5 0L10 5 5 10 0 5z"/>',
+  rojo: '<path d="M5 0L10 9H0z"/>',
+  gris: '<rect y="3.5" width="10" height="3" rx="1.5"/>',
+};
+const FILL = { verde: 0.3, amarillo: 0.6, rojo: 0.93, gris: 0.12 };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const ddmm = iso => { const [, m, d] = iso.split("-"); return `${d}/${m}`; };
+const fmt = v => Math.round(v).toLocaleString("es-AR");
+const tag = (lvl, text) => `<span class="tag ${lvl}"><svg viewBox="0 0 10 10" aria-hidden="true">${SHAPE[lvl]}</svg>${esc(text ?? LABEL[lvl])}</span>`;
+
+document.querySelectorAll("[data-shape]").forEach(el => {
+  const lvl = el.dataset.shape;
+  el.outerHTML = tag(lvl);
+});
+
+function thermo(level) {
+  const top = 8, bottom = 112, h = (bottom - top) * FILL[level];
+  return `<svg class="thermo" viewBox="0 0 46 150" role="img" aria-label="Termómetro: ${LABEL[level]}">
+    <rect class="glass" x="14" y="2" width="18" height="118" rx="9"/>
+    <circle class="glass" cx="23" cy="130" r="16"/>
+    <line class="tick" x1="34" x2="40" y1="${bottom - (bottom - top) * 0.33}" y2="${bottom - (bottom - top) * 0.33}"/>
+    <line class="tick" x1="34" x2="40" y1="${bottom - (bottom - top) * 0.66}" y2="${bottom - (bottom - top) * 0.66}"/>
+    <rect class="mercury ${level}" x="19" y="${bottom - h}" width="8" height="${h + 14}" rx="4"/>
+    <circle class="mercury ${level}" cx="23" cy="130" r="11"/>
+  </svg>`;
+}
+
+function spark(item) {
+  const W = 150, H = 44, n = item.weeks.length, gap = 6, bw = (W - gap * (n - 1)) / n;
+  const max = Math.max(1, ...item.weeks);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Conversiones por semana: ${item.weeks.join(", ")}">`;
+  item.weeks.forEach((v, i) => {
+    const x = i * (bw + gap), last = i === n - 1;
+    const label = `Semana del ${ddmm(DATA.week_starts[i] || DATA.week[0])}: ${fmt(v)} conversiones, ${fmt(item.clicks[i])} clics`;
+    if (v > 0) {
+      const h = Math.max(3, (v / max) * (H - 2));
+      s += `<rect class="b${last ? " " + item.level : ""}" x="${x}" y="${H - h}" width="${bw}" height="${h}" rx="3"><title>${label}</title></rect>`;
+    } else {
+      s += `<rect class="zero" x="${x}" y="${H - 3}" width="${bw}" height="3" rx="1.5"><title>${label}</title></rect>`;
+    }
+  });
+  return s + "</svg>";
+}
+
+function conv(item) {
+  return `<article class="conv">
+    <div>
+      <div class="head">${tag(item.level, item.title)}<span class="name">${esc(item.name)}</span></div>
+      <div class="sub">${esc(item.platform)} · ${esc(item.group)} · ${esc(item.campaigns.join(", "))}</div>
+      <p class="why">${esc(item.why)}</p>
+    </div>
+    <div class="spark">
+      <div><span class="val num">${fmt(item.weeks.at(-1))}</span> <small>esta semana · ${item.recent
+        ? `sem. anterior ${fmt(item.prev)}`
+        : `prom. ${item.weekly >= 1000 ? fmt(item.weekly) : String(item.weekly).replace(".", ",")}`}</small></div>
+      ${spark(item)}
+      <div class="lbl"><span>${ddmm(DATA.week_starts[0] || DATA.week[0])}</span><span>${ddmm(DATA.week[0])}</span></div>
+    </div>
+  </article>`;
+}
+
+function render() {
+  document.getElementById("week").textContent = `Semana del ${ddmm(DATA.week[0])} al ${ddmm(DATA.week[1])}`;
+  document.getElementById("next").textContent = `Próxima actualización: martes ${ddmm(DATA.next)}`;
+  document.getElementById("clients").innerHTML = DATA.clients.map(c => {
+    const counts = ["rojo", "amarillo", "verde", "gris"].filter(l => c.items.some(i => i.level === l))
+      .map(l => `${c.items.filter(i => i.level === l).length} ${LABEL[l].toLowerCase()}`).join(" · ");
+    return `<section class="row" aria-label="${esc(c.client)}">
+      <div class="side">${thermo(c.level)}
+        <div><h2>${esc(c.client)}</h2><div class="state">${tag(c.level)}<span class="count">${counts}</span></div></div>
+      </div>
+      <div class="convs">${c.items.map(conv).join("")}</div>
+    </section>`;
+  }).join("");
+}
+render();
+</script>

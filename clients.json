@@ -38,6 +38,36 @@
           "name": "PE - Sellers - Lead Calificado"
         }
       }
+    },
+    {
+      "slug": "banco-del-sol",
+      "name": "Banco del Sol",
+      "seepm_client_id": "c741ab8c-53ad-4f63-b790-f79acb606bdb",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "1372661172",
+          "name": "Banco del Sol Argentina (Prod)"
+        },
+        {
+          "platform": "google_ads",
+          "account_id": "2793794445",
+          "name": "Banco del Sol Engagement"
+        }
+      ],
+      "conversions": [
+        {
+          "account_id": "2793794445",
+          "match": "conversion_action_name LIKE '%ob_pass_create_success%'",
+          "name": "ob_pass_create_success (Android)"
+        },
+        {
+          "account_id": "1372661172",
+          "match": "conversion_action_name LIKE '%click to download%'",
+          "name": "0. Web click to download"
+        }
+      ],
+      "notes": "Conversiones elegidas por el equipo. Las acciones las administra el MCC 4189571982: filtrar por nombre, no por resource name. Meta sin inversión desde jul-26."
     }
   ]
 }

@@ -42,6 +42,6 @@ Si Meta limita la cuenta, no reintentar: armar el mail con lo que haya y decirlo
 ## Salida
 
 1. Guardar `data/<cliente>/<fecha de hoy>.json` con el formato del README (5 semanas por conversión; `since` si la campaña arrancó en las últimas 2 semanas).
-2. `python3 pulso.py data/*/<fecha de hoy>.json -o ejemplos/ultimo-mail.md`
+2. `python3 pulso.py data/*/<fecha de hoy>.json -o ejemplos/ultimo-mail.md --html ejemplos/ultimo-mail.html` (la versión HTML tiene la estética de Zenda, para mandarla por un conector de correo)
 3. Commit y push de `data/` en la rama de trabajo, para que la semana siguiente marque qué alertas son nuevas.
 4. Responder **solo con el texto del mail** que imprime el script. Ese mensaje es el que llega por correo.

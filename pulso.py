@@ -107,21 +107,141 @@ def render(snap, prev_alerts):
     return items, "\n".join(lines)
 
 
+# Estética Zenda (de la skill reportes-paid-media), con estilos en línea para clientes de correo.
+Z = {
+    "bg": "#FAFBF9", "card": "#FFFFFF", "ink": "#0A0A0B", "mu": "#5C5C5E", "bdr": "#E4E5E1",
+    "logo": "#009444", "g_ink": "#0E7A4E", "m": "#E71CA2", "m_ink": "#B0157C",
+    "display": "'Recoleta Alt', Recoleta, Georgia, 'Times New Roman', serif",
+    "body": "'Circular Std', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+    "mono": "'SF Mono', 'Fira Code', Menlo, Consolas, monospace",
+    "logo_font": "Montserrat, 'Helvetica Neue', Arial, sans-serif",
+}
+TAG_COLORS = {
+    "caida": ("#C2334D", "#F9E7EA"), "revisar": (Z["m_ink"], "#FCE8F5"), "ok": (Z["g_ink"], "#E2F7EE"),
+    "nueva": ("#1A6A8A", "#EAF6FA"), "poco_volumen": (Z["mu"], "#EDEEEB"),
+}
+
+
+def esc(t):
+    return str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def tag(status, text=None):
+    fg, bg = TAG_COLORS[status]
+    return (f'<span style="display:inline-block;font-family:{Z["mono"]};font-size:10px;letter-spacing:.08em;'
+            f'text-transform:uppercase;padding:3px 8px;border-radius:4px;background:{bg};color:{fg};'
+            f'font-weight:600;white-space:nowrap">{esc(text or LABEL[status])}</span>')
+
+
+def mono(text):
+    return (f'<span style="font-family:{Z["mono"]};font-size:11px;letter-spacing:.1em;text-transform:uppercase;'
+            f'color:{Z["mu"]}">{esc(text)}</span>')
+
+
+def html_client(snap, items, prev):
+    alerts = [i for i in items if i["status"] in ("caida", "revisar")]
+    ok = [i for i in items if i["status"] == "ok"]
+    rest = [i for i in items if i["status"] in ("nueva", "poco_volumen")]
+    cell = f"padding:10px 12px;border-top:1px solid {Z['bdr']}"
+    out = [f'<tr><td style="padding:36px 32px 0">',
+           f'<h2 style="margin:0 0 14px;font-family:{Z["display"]};font-size:26px;letter-spacing:-.02em;'
+           f'font-weight:700">{esc(snap["client"])}</h2>']
+    if not alerts:
+        out.append(f'<p style="margin:0 0 14px;color:{Z["mu"]}">Sin alertas: las {len(items)} conversiones '
+                   'de optimización registran actividad normal.</p>')
+    for i in alerts:
+        note = ""
+        if prev is not None:
+            note = "&nbsp;" + (tag("revisar", "nueva alerta") if i["id"] not in prev
+                               else tag("poco_volumen", "sigue de la semana pasada"))
+        out.append(
+            f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{Z["card"]};'
+            f'border:1.5px solid {Z["bdr"]};border-radius:16px;margin-bottom:12px"><tr><td style="padding:18px 20px">'
+            f'<div>{tag(i["status"])}{note}&nbsp; {mono(PLATFORM[i["platform"]] + " · " + i["group"])}</div>'
+            f'<div style="font-family:{Z["mono"]};font-size:15px;font-weight:600;margin:10px 0 4px;'
+            f'word-break:break-word">{esc(i["name"])}</div>'
+            f'<p style="margin:0 0 8px;color:{Z["mu"]}">{esc(i["why"])}</p>'
+            f'<div style="font-size:12.5px;color:{Z["mu"]}"><strong style="color:{Z["ink"]}">Campañas:</strong> '
+            f'{esc(", ".join(i["campaigns"]))}</div></td></tr></table>')
+    if ok:
+        th = (f'padding:10px 12px;font-family:{Z["mono"]};font-size:10px;letter-spacing:.08em;'
+              f'text-transform:uppercase;color:{Z["mu"]};font-weight:500')
+        out.append(f'<div style="margin:18px 0 8px">{tag("ok", f"{len(ok)} en orden")}</div>'
+                   f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:'
+                   f'{Z["card"]};border:1.5px solid {Z["bdr"]};border-radius:16px;font-size:13px"><tr>'
+                   f'<td style="{th};text-align:left">Conversión</td><td style="{th};text-align:right">Semana</td>'
+                   f'<td style="{th};text-align:right">Prom. 4 sem.</td><td style="{th};text-align:right">Clics</td></tr>')
+        for i in ok:
+            out.append(
+                f'<tr><td style="{cell}"><div style="font-family:{Z["mono"]};font-size:12.5px;word-break:break-word">'
+                f'{esc(i["name"])}</div><div style="font-size:11.5px;color:{Z["mu"]}">{PLATFORM[i["platform"]]} · '
+                f'{esc(i["group"])}</div></td>'
+                f'<td style="{cell};text-align:right;font-weight:700">{i["last"]}</td>'
+                f'<td style="{cell};text-align:right;color:{Z["mu"]}">{n(i["weekly"])}</td>'
+                f'<td style="{cell};text-align:right;color:{Z["mu"]}">{miles(i["last_clicks"])}</td></tr>')
+        out.append("</table>")
+    for i in rest:
+        out.append(f'<p style="margin:14px 0 0;font-size:13.5px;color:{Z["mu"]}">{tag(i["status"])}&nbsp; '
+                   f'<span style="font-family:{Z["mono"]};color:{Z["ink"]}">{esc(i["name"])}</span> '
+                   f'({PLATFORM[i["platform"]]}). {esc(i["why"])}</p>')
+    out.append("</td></tr>")
+    return "".join(out)
+
+
+def render_html(clients, week, counts):
+    alerts = counts["caida"] + counts["revisar"]
+    if alerts:
+        word = "conversión" if alerts == 1 else "conversiones"
+        head = f'{alerts} {word} para <span style="color:{Z["m"]}">revisar</span>'
+    else:
+        head = f'Todo en <span style="color:{Z["g_ink"]}">orden</span>'
+    chips = " ".join(tag(s, f"{counts[s]} {LABEL[s]}") for s in ORDER if counts[s])
+    rule = f'<div style="height:1px;background:{Z["bdr"]}"></div>'
+    return "".join([
+        '<!doctype html><html lang="es"><head><meta charset="utf-8">',
+        '<meta name="viewport" content="width=device-width,initial-scale=1">',
+        '<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">',
+        f'<title>Pulso semanal</title></head><body style="margin:0;padding:0;background:{Z["bg"]}">',
+        f'<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{Z["bg"]}">',
+        '<tr><td align="center" style="padding:24px 12px">',
+        f'<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;'
+        f'font-family:{Z["body"]};color:{Z["ink"]};font-size:14.5px;line-height:1.6">',
+        '<tr><td style="padding:0 32px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>',
+        f'<td style="font-family:{Z["logo_font"]};font-size:22px;letter-spacing:-.02em;color:{Z["logo"]}">zenda.</td>',
+        f'<td align="right">{mono("pulso semanal /")}</td></tr></table></td></tr>',
+        f'<tr><td style="padding:14px 32px 28px">{rule}</td></tr>',
+        f'<tr><td style="padding:0 32px">{mono(f"semana del {ddmm(week[0])} al {ddmm(week[1])}")}',
+        f'<h1 style="margin:6px 0 14px;font-family:{Z["display"]};font-size:34px;line-height:1.08;'
+        f'letter-spacing:-.03em;font-weight:700">{head}</h1><div style="line-height:2">{chips}</div></td></tr>',
+        *(html_client(*c) for c in clients),
+        f'<tr><td style="padding:36px 32px 8px">{rule}<p style="margin:14px 0 0;font-size:12px;color:{Z["mu"]}">',
+        'Solo se revisan los eventos por los que optimizan las campañas con entrega en la semana. Se compara la última '
+        'semana (martes a lunes) con las 4 anteriores, ajustando por clics. Google cuenta por fecha de conversión y los '
+        'últimos días todavía pueden sumar. Revisión de solo lectura: no se modificó nada en las cuentas.</p></td></tr>',
+        '</table></td></tr></table></body></html>',
+    ])
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("snapshots", nargs="+", type=Path)
     ap.add_argument("-o", "--out", type=Path)
+    ap.add_argument("--html", type=Path, help="también guarda el mail en HTML con la estética de Zenda")
     args = ap.parse_args()
 
-    blocks, counts, week = [], {s: 0 for s in ORDER}, None
+    blocks, clients, counts, week = [], [], {s: 0 for s in ORDER}, None
     for path in args.snapshots:
         snap = json.loads(path.read_text())
         week = snap["week"]
-        items, text = render(snap, previous_alerts(path))
+        prev = previous_alerts(path)
+        items, text = render(snap, prev)
         for i in items:
             counts[i["status"]] += 1
-        blocks.append((min(ORDER.index(i["status"]) for i in items), text))
+        worst = min(ORDER.index(i["status"]) for i in items)
+        blocks.append((worst, text))
+        clients.append((worst, snap, items, prev))
     blocks.sort(key=lambda b: b[0])
+    clients.sort(key=lambda c: c[0])
 
     alerts = counts["caida"] + counts["revisar"]
     subject = (f"Pulso semanal {ddmm(week[0])} al {ddmm(week[1])}: "
@@ -137,6 +257,9 @@ def main():
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(mail + "\n")
+    if args.html:
+        args.html.parent.mkdir(parents=True, exist_ok=True)
+        args.html.write_text(render_html([c[1:] for c in clients], week, counts))
     print(mail)
 
 

@@ -1,215 +1,143 @@
 #!/usr/bin/env python3
-"""Pulso de conversiones: calcula el estado de cada conversión principal y arma el panel.
+"""Pulso semanal: evalúa las conversiones por las que optimizan las campañas y arma el mail.
 
 Uso:
-  python3 pulso.py data/<cliente>/<fecha>.json [más snapshots...] -o out/pulso.html
+  python3 pulso.py data/<cliente>/<fecha>.json [más clientes...] [-o mail.md]
 
-Lee snapshots (ver README.md para el formato), no se conecta a ninguna plataforma
-y no modifica nada fuera del archivo de salida.
+Cada snapshot trae 5 semanas por conversión (4 de referencia + la última). Si existe un
+snapshot anterior del mismo cliente en su carpeta, marca qué alertas son nuevas.
+No se conecta a ninguna plataforma.
 """
 import argparse
 import json
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
-RECENT_DAYS = 7
-BASE_DAYS = 28
-MIN_HISTORY = 7
-
-ORDER = ["caida", "atencion", "ok", "nueva", "sin_senal", "sin_entrega"]
-LABELS = {
-    "caida": "Caída",
-    "atencion": "Revisar",
-    "ok": "OK",
-    "nueva": "Nueva",
-    "sin_senal": "Poco volumen",
-    "sin_entrega": "Sin entrega",
-}
+ORDER = ["caida", "revisar", "ok", "nueva", "poco_volumen"]
+ICON = {"caida": "🔴", "revisar": "🟡", "ok": "🟢", "nueva": "🔵", "poco_volumen": "⚪"}
+LABEL = {"caida": "Caída", "revisar": "Revisar", "ok": "OK", "nueva": "Nueva", "poco_volumen": "Poco volumen"}
+PLATFORM = {"google_ads": "Google Ads", "meta_ads": "Meta"}
 
 
-def fmt_n(x):
+def n(x):
     return f"{x:.1f}".rstrip("0").rstrip(".").replace(".", ",")
 
 
-def fmt_date(iso):
+def miles(k):
+    return f"{k:,}".replace(",", ".")
+
+
+def ddmm(iso):
     d = date.fromisoformat(iso)
     return f"{d.day:02d}/{d.month:02d}"
 
 
-def first_active(conv, clicks, since_idx):
-    if since_idx is not None:
-        return since_idx
-    for i, (c, k) in enumerate(zip(conv, clicks)):
-        if c or k:
-            return i
-    return len(conv)
+def evaluate(item, week_start):
+    conv, clicks = item["weeks"], item["clicks"]
+    last, last_clicks = conv[-1], clicks[-1]
+    base = [(c, k) for c, k in zip(conv[:-1], clicks[:-1]) if k]
+    base_conv = sum(c for c, _ in base)
+    base_clicks = sum(k for _, k in base)
+    weekly = base_conv / len(base) if base else 0
+    out = {"last": last, "last_clicks": last_clicks, "weekly": weekly}
+
+    def res(status, why):
+        return {**out, "status": status, "why": why}
+
+    since = item.get("since")
+    if since and date.fromisoformat(since) > week_start - timedelta(days=7):
+        return res("nueva", f"Arrancó el {ddmm(since)}. {last} conversiones con {miles(last_clicks)} clics; "
+                            "se compara desde la próxima semana.")
+
+    if base_conv == 0 and last == 0:
+        total = base_clicks + last_clicks
+        seen = f" La última fue el {ddmm(item['last_seen'])}." if item.get("last_seen") else ""
+        if total >= 100:
+            return res("revisar", f"Ninguna conversión en 5 semanas con {miles(total)} clics.{seen} "
+                                  "Puede ser la campaña o el evento: conviene completar el formulario y ver si llega.")
+        return res("poco_volumen", f"Sin conversiones en 5 semanas, pero con solo {total} clics.{seen}")
+
+    expected = base_conv / base_clicks * last_clicks if base_clicks else 0
+    if last == 0 and expected >= 2.5:
+        status = "caida" if expected >= 4 else "revisar"
+        return res(status, f"Cero conversiones con {miles(last_clicks)} clics; con su tasa habitual se esperaban "
+                           f"unas {n(expected)}. Si el tráfico es normal, revisar el tag o el formulario.")
+    if expected >= 5 and last / expected < 0.6:
+        status = "caida" if last / expected < 0.4 else "revisar"
+        return res(status, f"{last} conversiones con {miles(last_clicks)} clics; se esperaban unas {n(expected)} "
+                           f"({round((1 - last / expected) * 100)}% menos).")
+    if weekly < 1 and last == 0:
+        return res("poco_volumen", f"Convierte menos de una vez por semana ({n(weekly)} de promedio).")
+    return res("ok", "")
 
 
-def evaluate(item, dates):
-    conv, clicks = item["conv"], item["clicks"]
-    n = len(dates)
-    since_idx = dates.index(item["since"]) if item.get("since") in dates else None
-    start = first_active(conv, clicks, since_idx)
-
-    rec = range(max(start, n - RECENT_DAYS), n)
-    base = range(max(start, n - RECENT_DAYS - BASE_DAYS), n - RECENT_DAYS)
-    rec_conv = sum(conv[i] for i in rec)
-    rec_clicks = sum(clicks[i] for i in rec)
-    base_conv = sum(conv[i] for i in base)
-    base_clicks = sum(clicks[i] for i in base)
-    history_days = n - start
-
-    last_idx = max((i for i, c in enumerate(conv) if c), default=None)
-    if last_idx is not None:
-        last_seen = dates[last_idx]
-        silent = range(last_idx + 1, n)
-    else:
-        last_seen = item.get("last_seen")
-        silent = range(start, n)
-    silent_days = len(silent)
-    silent_clicks = sum(clicks[i] for i in silent)
-
-    cvr = base_conv / base_clicks if base_clicks else None
-    weekly_base = base_conv / len(base) * 7 if len(base) else None
-
-    stats = {
-        "rec_conv": rec_conv,
-        "rec_clicks": rec_clicks,
-        "base_weekly": round(weekly_base, 1) if weekly_base is not None else None,
-        "last_seen": last_seen,
-        "silent_days": silent_days,
-        "history_days": history_days,
-    }
-
-    def result(status, headline, detail):
-        return {"status": status, "label": LABELS[status], "headline": headline, "detail": detail, **stats}
-
-    if rec_clicks == 0:
-        return result(
-            "sin_entrega",
-            "La campaña no está entregando",
-            f"Sin clics en los últimos {RECENT_DAYS} días. Los conjuntos figuran activos pero no gastan, "
-            "así que no hay nada que medir. No es un problema de medición.",
-        )
-
-    if history_days < MIN_HISTORY:
-        return result(
-            "nueva",
-            f"Empezó el {fmt_date(dates[start])}",
-            f"Lleva {history_days} {'día' if history_days == 1 else 'días'} con {sum(conv[start:])} conversiones. "
-            "Hace falta una semana de historia para compararla.",
-        )
-
-    if base_conv == 0 and rec_conv == 0:
-        last_txt = f"La última fue el {fmt_date(last_seen)}." if last_seen else ""
-        if silent_clicks >= 100:
-            return result(
-                "atencion",
-                f"{silent_days} días sin conversiones con tráfico",
-                f"{silent_clicks} clics desde el {fmt_date(dates[start])} y ninguna conversión. " + (f"{last_txt} " if last_txt else "")
-                + "Puede ser la campaña o la medición: "
-                "conviene completar el formulario de prueba y ver si el evento llega.",
-            )
-        return result(
-            "sin_senal",
-            "Volumen demasiado bajo para evaluar",
-            f"{silent_clicks} clics desde el {fmt_date(dates[start])} y ninguna conversión. {last_txt} "
-            "Con tan poco tráfico un cero no indica una rotura.",
-        )
-
-    if cvr and silent_days:
-        expected_silent = cvr * silent_clicks
-        if expected_silent >= 4 or (expected_silent >= 2.5 and silent_days >= 3):
-            status = "caida" if expected_silent >= 4 else "atencion"
-            return result(
-                status,
-                f"{silent_days} días sin conversiones",
-                f"Desde el {fmt_date(last_seen)} hubo {silent_clicks} clics y ninguna conversión. "
-                f"Con su tasa habitual se esperaban unas {fmt_n(expected_silent)}. "
-                "Si el tráfico sigue normal, revisar el tag o el formulario.",
-            )
-
-    if cvr:
-        expected_rec = cvr * rec_clicks
-        if expected_rec >= 5:
-            ratio = rec_conv / expected_rec
-            if ratio < 0.6:
-                status = "caida" if ratio < 0.4 else "atencion"
-                return result(
-                    status,
-                    f"Convierte {round((1 - ratio) * 100)}% menos de lo esperado",
-                    f"{rec_conv} conversiones en los últimos {RECENT_DAYS} días con {rec_clicks} clics. "
-                    f"Con su tasa habitual se esperaban unas {fmt_n(expected_rec)}.",
-                )
-
-    if weekly_base is not None and weekly_base < 1 and rec_conv == 0:
-        return result(
-            "sin_senal",
-            "Convierte menos de una vez por semana",
-            f"Última conversión el {fmt_date(last_seen)}, con {silent_clicks} clics desde entonces. "
-            "Con este volumen una semana en cero es normal.",
-        )
-
-    base_clicks_weekly = base_clicks / len(base) * 7 if len(base) else 0
-    if weekly_base and rec_conv < 0.6 * weekly_base and rec_clicks < 0.7 * base_clicks_weekly:
-        return result(
-            "ok",
-            "Bajó junto con el tráfico",
-            f"{rec_conv} esta semana contra {fmt_n(weekly_base)} por semana antes, pero los clics también bajaron "
-            f"({rec_clicks} contra {round(base_clicks_weekly)}). La medición acompaña al tráfico.",
-        )
-
-    return result(
-        "ok",
-        "En línea con su historial",
-        f"{rec_conv} en los últimos {RECENT_DAYS} días contra {fmt_n(weekly_base)} por semana en las 4 anteriores"
-        + (f". Última el {fmt_date(last_seen)}." if last_seen else "."),
-    )
+def previous_alerts(path):
+    snaps = sorted(p for p in path.parent.glob("*.json") if p.name < path.name)
+    if not snaps:
+        return None
+    prev = json.loads(snaps[-1].read_text())
+    start = date.fromisoformat(prev["week"][0])
+    return {i["id"] for i in prev["conversions"] if evaluate(i, start)["status"] in ("caida", "revisar")}
 
 
-def build(snapshots):
-    clients = []
-    for snap in snapshots:
-        dates = snap["dates"]
-        items = []
-        for item in snap["conversions"]:
-            ev = evaluate(item, dates)
-            items.append({k: item.get(k) for k in
-                          ("id", "name", "group", "why", "platform", "account_id", "account_name", "since")}
-                         | {"conv": item["conv"], "clicks": item["clicks"]} | ev)
-        items.sort(key=lambda x: (ORDER.index(x["status"]), x["platform"], x["group"]))
-        counts = {s: sum(1 for i in items if i["status"] == s) for s in ORDER}
-        clients.append({
-            "client": snap["client"],
-            "ref_date": snap["ref_date"],
-            "generated_at": snap.get("generated_at"),
-            "dates": dates,
-            "notes": snap.get("notes", []),
-            "counts": counts,
-            "worst": next(s for s in ORDER if counts[s]) if items else "ok",
-            "items": items,
-        })
-    clients.sort(key=lambda c: (ORDER.index(c["worst"]), c["client"]))
-    return {"clients": clients, "labels": LABELS, "order": ORDER}
+def render(snap, prev_alerts):
+    week_start = date.fromisoformat(snap["week"][0])
+    items = [{**i, **evaluate(i, week_start)} for i in snap["conversions"]]
+    items.sort(key=lambda i: (ORDER.index(i["status"]), i["platform"], i["group"]))
+    alerts = [i for i in items if i["status"] in ("caida", "revisar")]
+    ok = [i for i in items if i["status"] == "ok"]
+    rest = [i for i in items if i["status"] in ("nueva", "poco_volumen")]
+
+    lines = [f"## {snap['client']}"]
+    if not alerts:
+        lines.append(f"🟢 Sin alertas. Las {len(items)} conversiones de optimización registran actividad normal.")
+    for i in alerts:
+        tag = ""
+        if prev_alerts is not None:
+            tag = " · **nueva alerta**" if i["id"] not in prev_alerts else " · sigue desde la semana pasada"
+        lines += ["", f"{ICON[i['status']]} **{LABEL[i['status']]}: {i['name']}** ({PLATFORM[i['platform']]} · "
+                      f"{i['group']}){tag}", f"{i['why']}", f"Campañas: {', '.join(i['campaigns'])}"]
+    if ok:
+        lines += ["", "| Conversión | Plataforma | Semana | Prom. 4 sem. | Clics |", "|---|---|--:|--:|--:|"]
+        for i in ok:
+            lines.append(f"| 🟢 {i['name']} | {PLATFORM[i['platform']]} | {i['last']} | {n(i['weekly'])} "
+                         f"| {miles(i['last_clicks'])} |")
+    for i in rest:
+        lines += ["", f"{ICON[i['status']]} {LABEL[i['status']]}: **{i['name']}** ({PLATFORM[i['platform']]}). {i['why']}"]
+    return items, "\n".join(lines)
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("snapshots", nargs="+", type=Path)
-    ap.add_argument("-o", "--out", type=Path, default=Path("out/pulso.html"))
-    ap.add_argument("--template", type=Path, default=Path(__file__).with_name("template.html"))
+    ap.add_argument("-o", "--out", type=Path)
     args = ap.parse_args()
 
-    data = build([json.loads(p.read_text()) for p in args.snapshots])
-    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-    html = args.template.read_text().replace("/*__PULSO_DATA__*/null", payload)
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(html)
+    blocks, counts, week = [], {s: 0 for s in ORDER}, None
+    for path in args.snapshots:
+        snap = json.loads(path.read_text())
+        week = snap["week"]
+        items, text = render(snap, previous_alerts(path))
+        for i in items:
+            counts[i["status"]] += 1
+        blocks.append((min(ORDER.index(i["status"]) for i in items), text))
+    blocks.sort(key=lambda b: b[0])
 
-    for c in data["clients"]:
-        print(f"{c['client']} ({c['ref_date']}):")
-        for i in c["items"]:
-            print(f"  [{i['label']:>12}] {i['name']} · {i['headline']}")
+    alerts = counts["caida"] + counts["revisar"]
+    subject = (f"Pulso semanal {ddmm(week[0])} al {ddmm(week[1])}: "
+               + (f"{alerts} {'conversión para revisar' if alerts == 1 else 'conversiones para revisar'}"
+                  if alerts else "todo en orden"))
+    summary = " · ".join(f"{ICON[s]} {counts[s]} {LABEL[s]}" for s in ORDER if counts[s])
+    mail = "\n\n".join([f"**Asunto:** {subject}", summary] + [t for _, t in blocks] + [
+        "---",
+        "Solo se revisan los eventos por los que optimizan las campañas con entrega en la semana. "
+        "Se compara la última semana (martes a lunes) con las 4 anteriores, ajustando por clics. "
+        "Google cuenta por fecha de conversión y los últimos días todavía pueden sumar.",
+    ])
+    if args.out:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(mail + "\n")
+    print(mail)
 
 
 if __name__ == "__main__":

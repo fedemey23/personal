@@ -1,64 +1,56 @@
 # Pulso de conversiones
 
-Monitor de solo lectura para detectar caídas en la medición (o en el sitio) de las conversiones principales de Google Ads y Meta, separado por cliente.
+Revisión semanal de solo lectura de las conversiones por las que optimizan las campañas de Google Ads y Meta, separada por cliente. Sirve para detectar caídas de medición o del sitio sin revisar las cuentas todos los días.
 
-No ejecuta cambios en las cuentas. Lee los datos a través de SeePM, calcula un estado por conversión y arma un panel HTML.
+No ejecuta cambios en las cuentas. Lee los datos a través de SeePM y devuelve un mail.
 
 ## Cómo funciona
 
-1. **Lectura** (la hace Claude con SeePM, ver [RUTINA.md](RUTINA.md)): por cada cliente de `clients.json` detecta las conversiones principales y baja 38 días de conversiones y clics por día. El resultado es un snapshot en `data/<cliente>/<fecha>.json`.
-2. **Cálculo** (`pulso.py`, sin dependencias): compara los últimos 7 días con las 4 semanas anteriores, teniendo en cuenta el tráfico.
-3. **Panel** (`template.html` → `out/pulso.html`): estado, explicación y gráfico de actividad diaria de cada conversión.
+1. **Lectura**: la skill [`pulso-semanal`](.claude/skills/pulso-semanal/SKILL.md) recorre los clientes de `clients.json`, toma solo los eventos de optimización de las campañas con entrega y baja 5 semanas de conversiones y clics. Son unas 3 consultas por cuenta de Google y 1 o 2 por cuenta de Meta. Guarda un snapshot en `data/<cliente>/<fecha>.json`.
+2. **Evaluación y mail** (`pulso.py`, sin dependencias): compara la última semana con las 4 anteriores ajustando por clics y arma el mail. Si hay un snapshot de la semana anterior, marca qué alertas son nuevas.
 
 ```bash
-python3 pulso.py data/pickit/2026-10-26.json -o out/pulso.html
+python3 pulso.py data/pickit/2026-11-03.json
 ```
 
-## Qué es una conversión principal
-
-- **Google Ads:** acción primaria cuya meta (categoría + origen) usan para ofertar las campañas activas.
-- **Meta:** evento de optimización de los conjuntos de anuncios activos.
+Ejemplo de salida: [ejemplos/mail-2026-11-03.md](ejemplos/mail-2026-11-03.md).
 
 ## Estados
 
 | Estado | Cuándo |
 |---|---|
-| Caída | Con el tráfico que hubo se esperaban 4 o más conversiones y llegaron cero, o llegó menos del 40% de lo esperado. |
-| Revisar | Lo mismo con umbrales más bajos, o un evento que nunca se registró con 100 clics o más. |
-| OK | En línea con su tasa habitual, o bajó en la misma proporción que el tráfico. |
-| Nueva | Menos de 7 días de historia. |
-| Poco volumen | Convierte tan poco que un cero no indica nada. |
-| Sin entrega | La campaña figura activa pero no tuvo clics en 7 días. |
+| 🔴 Caída | Con los clics de la semana se esperaban 4 o más conversiones y llegaron cero, o llegó menos del 40% de lo esperado. |
+| 🟡 Revisar | Lo mismo con umbrales más bajos, o un evento sin ninguna conversión en 5 semanas con 100 clics o más. |
+| 🟢 OK | En línea con su tasa habitual. |
+| 🔵 Nueva | La campaña arrancó en las últimas 2 semanas. |
+| ⚪ Poco volumen | Convierte tan poco que una semana en cero no indica nada. |
 
-"Lo esperado" es la tasa de conversión sobre clics de las 4 semanas anteriores aplicada a los clics de los días evaluados. Así, una baja de tráfico no se confunde con una rotura de medición.
+"Lo esperado" es la tasa de conversión sobre clics de las 4 semanas anteriores aplicada a los clics de la última. Así una baja de tráfico no se confunde con una rotura de medición.
 
 ## Formato del snapshot
 
 ```json
 {
   "client": "Pickit",
-  "ref_date": "2026-10-26",
-  "dates": ["2026-09-19", "...", "2026-10-26"],
-  "notes": ["texto libre que se muestra bajo el cliente"],
+  "week": ["2026-10-27", "2026-11-02"],
   "conversions": [
     {
-      "id": "7732517673",
+      "id": "gads:7732517673",
       "name": "AR - Sellers - Lead Calificado",
       "platform": "google_ads",
       "account_id": "6727245662",
-      "account_name": "Pickit - AR",
-      "group": "B2B Sellers · AR",
-      "why": "por qué es principal",
-      "since": "2026-10-06",
-      "last_seen": "2026-09-10",
-      "conv": [0, 1, 0],
-      "clicks": [40, 52, 38]
+      "group": "B2B Sellers AR",
+      "campaigns": ["AR_Flex_SameDay"],
+      "weeks": [3, 0, 4, 5, 4],
+      "clicks": [422, 119, 267, 448, 218],
+      "since": "2026-10-26",
+      "last_seen": "2026-09-10"
     }
   ]
 }
 ```
 
-`conv` y `clicks` van alineados con `dates`. `since` (fecha de inicio de la campaña, si empezó dentro de la ventana) y `last_seen` (última conversión conocida antes de la ventana) son opcionales.
+`weeks` y `clicks` van de la semana más vieja a la última. `since` (inicio de la campaña, si es reciente) y `last_seen` (última conversión antes de la ventana) son opcionales.
 
 ## Solo lectura
 
@@ -66,4 +58,4 @@ python3 pulso.py data/pickit/2026-10-26.json -o out/pulso.html
 
 ## Agregar un cliente
 
-Sumarlo a `clients.json` con su id de SeePM y las cuentas a monitorear. La rutina diaria lo toma desde la próxima corrida.
+Sumarlo a `clients.json` con su id de SeePM y las cuentas a revisar. La skill lo toma desde la próxima corrida.

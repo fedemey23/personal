@@ -6,11 +6,38 @@
       "name": "Pickit",
       "seepm_client_id": "581c8402-e96e-4cb3-92e6-6d6bbfa865a1",
       "accounts": [
-        {"platform": "google_ads", "account_id": "6727245662", "name": "Pickit - AR"},
-        {"platform": "meta_ads", "account_id": "act_280747187560509", "name": "pickit - AR"},
-        {"platform": "meta_ads", "account_id": "act_4901263773324478", "name": "pickers - AR"}
+        {
+          "platform": "google_ads",
+          "account_id": "6727245662",
+          "name": "Pickit - AR"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_280747187560509",
+          "name": "pickit - AR"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_4901263773324478",
+          "name": "pickers - AR"
+        }
       ],
-      "notes": "Las campañas de MX, CL y PE corren dentro de las cuentas AR. El resto de las cuentas de país no tiene actividad (ver brain de SeePM, ads.md)."
+      "notes": "Las campañas de MX, CL y PE corren dentro de las cuentas AR. El resto de las cuentas de país no tiene actividad (ver brain de SeePM, ads.md).",
+      "google_ads_goal_actions": {
+        "_comment": "Acción que se revisa por cada meta (categoría/origen) de las campañas activas. Si la meta tiene varias primarias, la que el cliente usa como objetivo.",
+        "SUBMIT_LEAD_FORM/WEBSITE": {
+          "action_id": "7732517673",
+          "name": "AR - Sellers - Lead Calificado"
+        },
+        "BOOK_APPOINTMENT/WEBSITE": {
+          "action_id": "7735155969",
+          "name": "Lead calificado - MX"
+        },
+        "ADD_TO_CART/WEBSITE": {
+          "action_id": "7737562471",
+          "name": "PE - Sellers - Lead Calificado"
+        }
+      }
     }
   ]
 }

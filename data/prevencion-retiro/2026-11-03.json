@@ -1,13 +1,157 @@
 {
  "client": "Prevención Retiro",
  "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
- "week": ["2026-10-27", "2026-11-02"],
- "week_starts": ["2026-09-29", "2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"],
+ "week": [
+  "2026-10-27",
+  "2026-11-02"
+ ],
+ "week_starts": [
+  "2026-09-29",
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27"
+ ],
  "conversions": [
-  {"id": "meta:448123337694974", "name": "PR - Contacto - Cotizacion - Formulario Enviado V2", "platform": "meta_ads", "account_id": "act_502914543864282", "group": "Cotización",
-   "campaigns": ["Test - PR_FB_Conversiones_2022_Performance - v2"], "weeks": [35, 55, 53, 29, 22], "clicks": [493, 647, 654, 570, 639]},
-  {"id": "gads:365195478", "name": "Pixel Google Ads - Contacto", "platform": "google_ads", "account_id": "5324690639", "group": "Cotización",
-   "campaigns": ["PR Search Brand, Not Brand y PMax"], "weeks": [24, 35, 28, 25, 15], "clicks": [1730, 1638, 1389, 1405, 1228],
-   "daily": {"conv": [1, 2, 1, 2, 2, 4, 3], "clicks": [204, 191, 226, 194, 105, 129, 179]}}
+  {
+   "id": "meta:448123337694974",
+   "name": "PR - Contacto - Cotizacion - Formulario Enviado V2",
+   "platform": "meta_ads",
+   "account_id": "act_502914543864282",
+   "group": "Cotización",
+   "campaigns": [
+    "Test - PR_FB_Conversiones_2022_Performance - v2"
+   ],
+   "weeks": [
+    35,
+    55,
+    53,
+    29,
+    22
+   ],
+   "clicks": [
+    493,
+    647,
+    654,
+    570,
+    639
+   ]
+  },
+  {
+   "id": "gads:365195478",
+   "name": "Pixel Google Ads - Contacto",
+   "platform": "google_ads",
+   "account_id": "5324690639",
+   "group": "Cotización",
+   "campaigns": [
+    "PR Search Brand, Not Brand y PMax"
+   ],
+   "weeks": [
+    24,
+    35,
+    28,
+    25,
+    15
+   ],
+   "clicks": [
+    1730,
+    1638,
+    1389,
+    1405,
+    1228
+   ],
+   "daily": {
+    "conv": [
+     1,
+     2,
+     1,
+     2,
+     2,
+     4,
+     3
+    ],
+    "clicks": [
+     204,
+     191,
+     226,
+     194,
+     105,
+     129,
+     179
+    ]
+   }
+  }
+ ],
+ "campaigns": [
+  {
+   "name": "PR_PR_GL_Search_Not Brand_Conversiones_2022_Performance",
+   "platform": "google_ads",
+   "account": "GSS - PR - Línea Crédito GSS",
+   "kind": "conv",
+   "spend": [
+    761313,
+    178007
+   ],
+   "results": [
+    43.6,
+    5
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PR_PR_GL_Search_Brand_Conversiones_2022_Performance",
+   "platform": "google_ads",
+   "account": "GSS - PR - Línea Crédito GSS",
+   "kind": "conv",
+   "spend": [
+    579964,
+    122425
+   ],
+   "results": [
+    28.3,
+    3
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PR_PR_GL_PerformanceMax_Conversiones_2022_Performance",
+   "platform": "google_ads",
+   "account": "GSS - PR - Línea Crédito GSS",
+   "kind": "conv",
+   "spend": [
+    823873,
+    195824
+   ],
+   "results": [
+    36.1,
+    8
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "Test - PR_FB_Conversiones_2022_Performance - v2",
+   "platform": "meta_ads",
+   "account": "Prevención Retiro - LCB",
+   "kind": "conv",
+   "spend": [
+    846118,
+    237123
+   ],
+   "results": [
+    172,
+    22
+   ],
+   "prev_weeks": 4,
+   "new": false
+  }
+ ],
+ "no_delivery": [
+  {
+   "name": "PR_PR_FB_Trafico_PosteoPromocionado_2023_Redes",
+   "platform": "meta_ads"
+  }
  ]
 }

@@ -1,21 +1,359 @@
 {
  "client": "Prevención Salud",
  "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
- "week": ["2026-10-27", "2026-11-02"],
- "week_starts": ["2026-09-29", "2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"],
+ "week": [
+  "2026-10-27",
+  "2026-11-02"
+ ],
+ "week_starts": [
+  "2026-09-29",
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27"
+ ],
  "conversions": [
-  {"id": "meta:559938021573176", "name": "PS - Paso 3 - Confirmacion", "platform": "meta_ads", "account_id": "act_1384389785165972", "group": "Cotizador",
-   "campaigns": ["PS_PS_FB_Conversiones_RMKT_2023", "PS_PS_FB_Conversiones_Intereses_2023"], "weeks": [0, 0, 0, 0, 0], "clicks": [1257, 6366, 12512, 5594, 287],
-   "note": "Causa conocida: Meta bloquea el dominio del cotizador desde el 24/09 y el reclamo se envió el 13/10. Las campañas optimizan sin señal."},
-  {"id": "gads:428638548", "name": "Pixel AdWords - Paso 4 - Cotización Completa", "platform": "google_ads", "account_id": "4795895040", "group": "Cotizador",
-   "campaigns": ["PS_PS_GL_Search_Brand_Cotizaciones_2022", "PS_PS_GL_ZonaNOA_DemandGen_Trafico_2026"], "weeks": [297, 202, 240, 366, 419], "clicks": [557, 479, 601, 641, 607],
-   "daily": {"conv": [60, 65, 65, 58, 54, 54, 63], "clicks": [102, 115, 104, 69, 18, 24, 175]}},
-  {"id": "gads:conversacion_iniciada", "name": "Conversación iniciada", "platform": "google_ads", "account_id": "4795895040", "group": "WhatsApp ION",
-   "campaigns": ["PS_Search_PlanION_MessageAds"], "since": "2026-11-02", "weeks": [0, 0, 0, 0, 6], "clicks": [0, 0, 0, 0, 25],
-   "note": "Hasta el 28/10 llegaban unas 60 por día desde otra campaña que ya no está activa."},
-  {"id": "meta:forms_leads", "name": "Leads de formulario instantáneo", "platform": "meta_ads", "account_id": "act_1384389785165972", "group": "Forms Leads",
-   "campaigns": ["PS_PS_FB_Forms_Leads_2024_Performance"], "weeks": [11, 9, 11, 10, 10], "clicks": [149, 100, 92, 149, 116]},
-  {"id": "meta:messaging_conversation_started", "name": "Conversaciones de WhatsApp iniciadas", "platform": "meta_ads", "account_id": "act_1384389785165972", "group": "WhatsApp",
-   "campaigns": ["PS_Whatsapp_ION_2026_Performance_Mensajes_2datos", "PS_PS_FB_Whatsapp_CMA_2026_Leads - v2"], "weeks": [13, 64, 99, 84, 80], "clicks": [174, 1156, 938, 848, 802]}
+  {
+   "id": "meta:559938021573176",
+   "name": "PS - Paso 3 - Confirmacion",
+   "platform": "meta_ads",
+   "account_id": "act_1384389785165972",
+   "group": "Cotizador",
+   "campaigns": [
+    "PS_PS_FB_Conversiones_RMKT_2023",
+    "PS_PS_FB_Conversiones_Intereses_2023"
+   ],
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "clicks": [
+    1257,
+    6366,
+    12512,
+    5594,
+    287
+   ],
+   "note": "Causa conocida: Meta bloquea el dominio del cotizador desde el 24/09 y el reclamo se envió el 13/10. Las campañas optimizan sin señal."
+  },
+  {
+   "id": "gads:428638548",
+   "name": "Pixel AdWords - Paso 4 - Cotización Completa",
+   "platform": "google_ads",
+   "account_id": "4795895040",
+   "group": "Cotizador",
+   "campaigns": [
+    "PS_PS_GL_Search_Brand_Cotizaciones_2022",
+    "PS_PS_GL_ZonaNOA_DemandGen_Trafico_2026"
+   ],
+   "weeks": [
+    297,
+    202,
+    240,
+    366,
+    419
+   ],
+   "clicks": [
+    557,
+    479,
+    601,
+    641,
+    607
+   ],
+   "daily": {
+    "conv": [
+     60,
+     65,
+     65,
+     58,
+     54,
+     54,
+     63
+    ],
+    "clicks": [
+     102,
+     115,
+     104,
+     69,
+     18,
+     24,
+     175
+    ]
+   }
+  },
+  {
+   "id": "gads:conversacion_iniciada",
+   "name": "Conversación iniciada",
+   "platform": "google_ads",
+   "account_id": "4795895040",
+   "group": "WhatsApp ION",
+   "campaigns": [
+    "PS_Search_PlanION_MessageAds"
+   ],
+   "since": "2026-11-02",
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    6
+   ],
+   "clicks": [
+    0,
+    0,
+    0,
+    0,
+    25
+   ],
+   "note": "Hasta el 28/10 llegaban unas 60 por día desde otra campaña que ya no está activa."
+  },
+  {
+   "id": "meta:forms_leads",
+   "name": "Leads de formulario instantáneo",
+   "platform": "meta_ads",
+   "account_id": "act_1384389785165972",
+   "group": "Forms Leads",
+   "campaigns": [
+    "PS_PS_FB_Forms_Leads_2024_Performance"
+   ],
+   "weeks": [
+    11,
+    9,
+    11,
+    10,
+    10
+   ],
+   "clicks": [
+    149,
+    100,
+    92,
+    149,
+    116
+   ]
+  },
+  {
+   "id": "meta:messaging_conversation_started",
+   "name": "Conversaciones de WhatsApp iniciadas",
+   "platform": "meta_ads",
+   "account_id": "act_1384389785165972",
+   "group": "WhatsApp",
+   "campaigns": [
+    "PS_Whatsapp_ION_2026_Performance_Mensajes_2datos",
+    "PS_PS_FB_Whatsapp_CMA_2026_Leads - v2"
+   ],
+   "weeks": [
+    13,
+    64,
+    99,
+    84,
+    80
+   ],
+   "clicks": [
+    174,
+    1156,
+    938,
+    848,
+    802
+   ]
+  }
+ ],
+ "campaigns": [
+  {
+   "name": "PS_PS_GL_Search_Brand_Cotizaciones_2022_Performance",
+   "platform": "google_ads",
+   "account": "GSS - PS - Marca",
+   "kind": "conv",
+   "spend": [
+    1310747,
+    361969
+   ],
+   "results": [
+    218.6,
+    30
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_GL_Search_Not Brand_Cotizaciones_2022_Performance",
+   "platform": "google_ads",
+   "account": "GSS - PS - Marca",
+   "kind": "conv",
+   "spend": [
+    1386796,
+    570421
+   ],
+   "results": [
+    47,
+    13
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_GL_PerformanceMax_Cotizaciones_2023",
+   "platform": "google_ads",
+   "account": "GSS - PS - Marca",
+   "kind": "conv",
+   "spend": [
+    3482942,
+    1108023
+   ],
+   "results": [
+    972.7,
+    381
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_GL_ZonaNOA_DemandGen_Trafico_2026",
+   "platform": "google_ads",
+   "account": "GSS - PS - Marca",
+   "kind": "awareness",
+   "spend": [
+    717425,
+    167281
+   ],
+   "results": [
+    1,
+    1
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_Search_PlanION_MessageAds",
+   "platform": "google_ads",
+   "account": "GSS - PS - Marca",
+   "kind": "conv",
+   "spend": [
+    0,
+    28863
+   ],
+   "results": [
+    0,
+    6
+   ],
+   "prev_weeks": 0,
+   "new": true
+  },
+  {
+   "name": "PS_PS_FB_Forms_Leads_2024_Performance",
+   "platform": "meta_ads",
+   "account": "Prevención Salud - LCB",
+   "kind": "conv",
+   "spend": [
+    534415,
+    158780
+   ],
+   "results": [
+    41,
+    10
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_Whatsapp_ION_2026_Performance_Mensajes_2datos",
+   "platform": "meta_ads",
+   "account": "Prevención Salud - LCB",
+   "kind": "conv",
+   "spend": [
+    1221442,
+    351403
+   ],
+   "results": [
+    233,
+    73
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_FB_Whatsapp_CMA_2026_Leads - v2",
+   "platform": "meta_ads",
+   "account": "Prevención Salud - LCB",
+   "kind": "conv",
+   "spend": [
+    265337,
+    60991
+   ],
+   "results": [
+    27,
+    7
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_FB_Conversiones_RMKT_2023_Performance",
+   "platform": "meta_ads",
+   "account": "Prevención Salud - LCB",
+   "kind": "conv",
+   "spend": [
+    845393,
+    4870
+   ],
+   "results": [
+    0,
+    0
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_FB_Conversiones_Intereses_2023_Performance",
+   "platform": "meta_ads",
+   "account": "Prevención Salud - LCB",
+   "kind": "conv",
+   "spend": [
+    869284,
+    4555
+   ],
+   "results": [
+    0,
+    0
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PS_PS_FB_ZonaNOA_Alcance_2026",
+   "platform": "meta_ads",
+   "account": "Prevención Salud - LCB",
+   "kind": "awareness",
+   "spend": [
+    582743,
+    132833
+   ],
+   "results": [
+    0,
+    0
+   ],
+   "prev_weeks": 4,
+   "new": false
+  }
+ ],
+ "no_delivery": [
+  {
+   "name": "PS_PS_GL_Search_Not Brand_Cotizaciones_2022_Performance PS | Broad Match Test",
+   "platform": "google_ads"
+  },
+  {
+   "name": "PS_FB_Alcance_2024_TokenEnFarmacias",
+   "platform": "meta_ads"
+  },
+  {
+   "name": "PS_PS_FB_Trafico_EtiquetadoFrontalYT_2023_Redes",
+   "platform": "meta_ads"
+  },
+  {
+   "name": "PS_Beneficia_FB_Trafico_Clicks_2023_Redes",
+   "platform": "meta_ads"
+  }
  ]
 }

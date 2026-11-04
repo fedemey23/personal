@@ -24,6 +24,18 @@ python3 pulso.py data/pickit/2026-11-03.json data/banco-del-sol/2026-11-03.json 
 
 "Lo esperado" es la tasa de conversión sobre clics de las 4 semanas anteriores aplicada a los clics de la última. Así una baja de tráfico no se confunde con una rotura de medición. El termómetro de cada cliente mide qué parte de sus conversiones tiene alertas (rojo cuenta 1, amarillo 0,5; las grises no cuentan): hasta 20% queda en bien, hasta 50% en atención y arriba en crítico. Cada conversión muestra su plataforma.
 
+## Pestaña Inversión y entrega
+
+Por campaña, la inversión y los resultados de la semana contra las 4 anteriores:
+
+| Color | Cuándo |
+|---|---|
+| Rojo · gasta sin resultados | Optimiza por una conversión, gastó $10.000 o más en la semana y no trajo ninguna, y además lleva 5 semanas sin resultados o gastó el doble de su costo habitual. |
+| Amarillo · atención | El costo por resultado se triplicó contra su historial (con al menos 3 resultados previos), o la inversión se duplicó contra su promedio semanal con al menos $100.000 de diferencia. |
+| Gris · activa sin entrega | Figura activa y no tuvo impresiones en la semana. |
+
+Las campañas de alcance, tráfico o video y las que tienen menos de dos semanas no se evalúan por costo. Cada pestaña abre con un resumen ejecutivo de una frase y una línea por alerta.
+
 ## Formato del snapshot
 
 ```json

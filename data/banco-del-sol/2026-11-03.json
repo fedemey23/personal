@@ -1,16 +1,229 @@
 {
  "client": "Banco del Sol",
  "seepm_client_id": "c741ab8c-53ad-4f63-b790-f79acb606bdb",
- "week": ["2026-10-27", "2026-11-02"],
- "week_starts": ["2026-09-29", "2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"],
+ "week": [
+  "2026-10-27",
+  "2026-11-02"
+ ],
+ "week_starts": [
+  "2026-09-29",
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27"
+ ],
  "conversions": [
-  {"id": "gads:ob_pass_create_success_android", "name": "ob_pass_create_success (Android)", "platform": "google_ads", "account_id": "2793794445",
-   "group": "Onboarding app", "campaigns": ["AQ_AO_Installs_UAC_AppInstalls_Automated V4 | TROAS"], "since": "2026-10-23",
-   "weeks": [9, 10, 8, 104, 268], "clicks": [0, 0, 0, 848, 2228],
-   "daily": {"conv": [68, 62, 67, 39, 5, 8, 19], "clicks": [305, 331, 363, 357, 247, 277, 348]}},
-  {"id": "gads:462131657", "name": "0. Web click to download", "platform": "google_ads", "account_id": "1372661172",
-   "group": "Web", "campaigns": ["CO_BDS_DemandGen_Conversiones_2025_Performance", "CO_AO_..._Pros_Brand", "CO_AO_..._Pros_Category_Broad"], "since": "2026-10-23",
-   "weeks": [26, 11, 7, 5238, 16407], "clicks": [0, 0, 0, 29597, 50371],
-   "daily": {"conv": [2130, 2476, 2577, 2667, 3183, 1790, 1584], "clicks": [7960, 8209, 8110, 8555, 9455, 5798, 5284]}}
+  {
+   "id": "gads:ob_pass_create_success_android",
+   "name": "ob_pass_create_success (Android)",
+   "platform": "google_ads",
+   "account_id": "2793794445",
+   "group": "Onboarding app",
+   "campaigns": [
+    "AQ_AO_Installs_UAC_AppInstalls_Automated V4 | TROAS"
+   ],
+   "since": "2026-10-23",
+   "weeks": [
+    9,
+    10,
+    8,
+    104,
+    268
+   ],
+   "clicks": [
+    0,
+    0,
+    0,
+    848,
+    2228
+   ],
+   "daily": {
+    "conv": [
+     68,
+     62,
+     67,
+     39,
+     5,
+     8,
+     19
+    ],
+    "clicks": [
+     305,
+     331,
+     363,
+     357,
+     247,
+     277,
+     348
+    ]
+   }
+  },
+  {
+   "id": "gads:462131657",
+   "name": "0. Web click to download",
+   "platform": "google_ads",
+   "account_id": "1372661172",
+   "group": "Web",
+   "campaigns": [
+    "CO_BDS_DemandGen_Conversiones_2025_Performance",
+    "CO_AO_..._Pros_Brand",
+    "CO_AO_..._Pros_Category_Broad"
+   ],
+   "since": "2026-10-23",
+   "weeks": [
+    26,
+    11,
+    7,
+    5238,
+    16407
+   ],
+   "clicks": [
+    0,
+    0,
+    0,
+    29597,
+    50371
+   ],
+   "daily": {
+    "conv": [
+     2130,
+     2476,
+     2577,
+     2667,
+     3183,
+     1790,
+     1584
+    ],
+    "clicks": [
+     7960,
+     8209,
+     8110,
+     8555,
+     9455,
+     5798,
+     5284
+    ]
+   }
+  }
+ ],
+ "campaigns": [
+  {
+   "name": "CO_AO_Conversiones_Search_Search_Pros_Brand",
+   "platform": "google_ads",
+   "account": "Banco del Sol Argentina (Prod)",
+   "kind": "conv",
+   "spend": [
+    79162,
+    213349
+   ],
+   "results": [
+    332,
+    701
+   ],
+   "prev_weeks": 1,
+   "new": true
+  },
+  {
+   "name": "CO_AO_Conversiones_Search_Search_Pros_Category_Broad",
+   "platform": "google_ads",
+   "account": "Banco del Sol Argentina (Prod)",
+   "kind": "conv",
+   "spend": [
+    185744,
+    314973
+   ],
+   "results": [
+    262,
+    487
+   ],
+   "prev_weeks": 1,
+   "new": true
+  },
+  {
+   "name": "CO_BDS_DemandGen_Conversiones_2025_Performance",
+   "platform": "google_ads",
+   "account": "Banco del Sol Argentina (Prod)",
+   "kind": "conv",
+   "spend": [
+    812160,
+    1224470
+   ],
+   "results": [
+    5057,
+    16003
+   ],
+   "prev_weeks": 1,
+   "new": true
+  },
+  {
+   "name": "BA_AO_EfficientReach_Youtube_Pros_Di_RS_AO",
+   "platform": "google_ads",
+   "account": "Banco del Sol Argentina (Prod)",
+   "kind": "awareness",
+   "spend": [
+    1238059,
+    1871244
+   ],
+   "results": [
+    22,
+    26
+   ],
+   "prev_weeks": 1,
+   "new": true
+  },
+  {
+   "name": "CO_FAL_Empresas_Conversiones_Search_2026",
+   "platform": "google_ads",
+   "account": "Banco del Sol Argentina (Prod)",
+   "kind": "conv",
+   "spend": [
+    0,
+    95389
+   ],
+   "results": [
+    0,
+    17
+   ],
+   "prev_weeks": 0,
+   "new": true
+  },
+  {
+   "name": "AQ_AO_Installs_UAC_AppInstalls_Automated V4 | TROAS",
+   "platform": "google_ads",
+   "account": "Banco del Sol Engagement",
+   "kind": "conv",
+   "spend": [
+    119254,
+    281879
+   ],
+   "results": [
+    704,
+    1794
+   ],
+   "prev_weeks": 1,
+   "new": true
+  }
+ ],
+ "no_delivery": [
+  {
+   "name": "CO_AO_Conversiones_GDN_Display_Lal Banking_Di_Rs_Experimento_MaxClics",
+   "platform": "google_ads"
+  },
+  {
+   "name": "CO_AO_Trafico_GDN_Display_Beneficios_Santafe",
+   "platform": "google_ads"
+  },
+  {
+   "name": "CO_AO_Conversiones_Search_Search_Pros_Brand AB Test URL",
+   "platform": "google_ads"
+  },
+  {
+   "name": "CO_AO_Conversiones_Search_Search_Pros_Brand AB Test URL V2",
+   "platform": "google_ads"
+  },
+  {
+   "name": "AQ_AO_Installs_UAC_AppInstalls_Automated V3 | TROAS",
+   "platform": "google_ads"
+  }
  ]
 }

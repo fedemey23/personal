@@ -1,35 +1,485 @@
 {
  "client": "Pickit",
  "seepm_client_id": "581c8402-e96e-4cb3-92e6-6d6bbfa865a1",
- "week": ["2026-10-27", "2026-11-02"],
- "week_starts": ["2026-09-29", "2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"],
+ "week": [
+  "2026-10-27",
+  "2026-11-02"
+ ],
+ "week_starts": [
+  "2026-09-29",
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27"
+ ],
  "conversions": [
-  {"id": "gads:7732517673", "name": "AR - Sellers - Lead Calificado", "platform": "google_ads", "account_id": "6727245662",
-   "group": "B2B Sellers AR", "campaigns": ["AR_Flex_SameDay", "AR_Hunting_ECommerce", "AR_Hunting_Fintech"],
-   "weeks": [3, 0, 4, 5, 4], "clicks": [422, 119, 267, 448, 218]},
-  {"id": "gads:7735155969", "name": "Lead calificado - MX", "platform": "google_ads", "account_id": "6727245662",
-   "group": "B2B Sellers MX", "campaigns": ["MX_Banca&Fintech", "MX_Ecommerce&Shopify #2", "MX_AgenciasUGC&Kits #2"],
-   "weeks": [1, 1, 2, 6, 2], "clicks": [379, 203, 262, 361, 429]},
-  {"id": "gads:7737562471", "name": "PE - Sellers - Lead Calificado", "platform": "google_ads", "account_id": "6727245662",
-   "group": "B2B Sellers PE", "campaigns": ["PE_Latam_Ecommerce&Retail"],
-   "weeks": [0, 0, 0, 0, 1], "clicks": [10, 9, 12, 8, 160], "last_seen": "2026-09-10"},
-  {"id": "meta:lead_calificado_puntos_ar", "name": "lead_calificado_puntos_ar", "platform": "meta_ads", "account_id": "act_280747187560509",
-   "group": "Puntos AR", "campaigns": ["AR_Puntos ReemplazoML - CONVERSIONES", "AR_Puntos SAMEDAY - CONVERSIONES"], "since": "2026-10-06",
-   "weeks": [0, 261, 207, 179, 213], "clicks": [0, 3095, 2293, 2072, 2356]},
-  {"id": "meta:ar_tn_onboarding_conversion", "name": "ar_tn_onboarding_conversion", "platform": "meta_ads", "account_id": "act_280747187560509",
-   "group": "C2C Tienda Nube AR", "campaigns": ["AR_C2C_TiendaNube"],
-   "weeks": [4, 7, 5, 7, 12], "clicks": [401, 614, 563, 869, 806]},
-  {"id": "meta:sellers_lead_calificado_ar", "name": "sellers_lead_calificado_ar", "platform": "meta_ads", "account_id": "act_280747187560509",
-   "group": "B2B Sellers AR", "campaigns": ["AR_Hunting&SameDay_H2"],
-   "weeks": [3, 2, 1, 1, 2], "clicks": [91, 121, 197, 181, 189]},
-  {"id": "meta:sellers_lead_calificado_mx", "name": "sellers_lead_calificado_mx", "platform": "meta_ads", "account_id": "act_280747187560509",
-   "group": "B2B Sellers MX", "campaigns": ["MX_HUNTING_H2"],
-   "weeks": [0, 0, 1, 1, 0], "clicks": [17, 22, 29, 69, 23]},
-  {"id": "meta:sellers_lead_calificado_pe", "name": "sellers_lead_calificado_pe", "platform": "meta_ads", "account_id": "act_280747187560509",
-   "group": "B2B Sellers PE", "campaigns": ["PE_B2B_H2_FB_Conversiones_2026"],
-   "weeks": [0, 0, 0, 0, 0], "clicks": [33, 22, 26, 28, 33]},
-  {"id": "meta:lead_calificado_camionetas_mx", "name": "lead_calificado_camionetas_mx", "platform": "meta_ads", "account_id": "act_4901263773324478",
-   "group": "Pickers Rentals MX", "campaigns": ["MX_Rentals_FB_Conversiones_2026_Geos"], "since": "2026-10-26",
-   "weeks": [0, 0, 0, 5, 62], "clicks": [0, 0, 0, 182, 2129]}
+  {
+   "id": "gads:7732517673",
+   "name": "AR - Sellers - Lead Calificado",
+   "platform": "google_ads",
+   "account_id": "6727245662",
+   "group": "B2B Sellers AR",
+   "campaigns": [
+    "AR_Flex_SameDay",
+    "AR_Hunting_ECommerce",
+    "AR_Hunting_Fintech"
+   ],
+   "weeks": [
+    3,
+    0,
+    4,
+    5,
+    4
+   ],
+   "clicks": [
+    422,
+    119,
+    267,
+    448,
+    218
+   ]
+  },
+  {
+   "id": "gads:7735155969",
+   "name": "Lead calificado - MX",
+   "platform": "google_ads",
+   "account_id": "6727245662",
+   "group": "B2B Sellers MX",
+   "campaigns": [
+    "MX_Banca&Fintech",
+    "MX_Ecommerce&Shopify #2",
+    "MX_AgenciasUGC&Kits #2"
+   ],
+   "weeks": [
+    1,
+    1,
+    2,
+    6,
+    2
+   ],
+   "clicks": [
+    379,
+    203,
+    262,
+    361,
+    429
+   ]
+  },
+  {
+   "id": "gads:7737562471",
+   "name": "PE - Sellers - Lead Calificado",
+   "platform": "google_ads",
+   "account_id": "6727245662",
+   "group": "B2B Sellers PE",
+   "campaigns": [
+    "PE_Latam_Ecommerce&Retail"
+   ],
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "clicks": [
+    10,
+    9,
+    12,
+    8,
+    160
+   ],
+   "last_seen": "2026-09-10"
+  },
+  {
+   "id": "meta:lead_calificado_puntos_ar",
+   "name": "lead_calificado_puntos_ar",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "Puntos AR",
+   "campaigns": [
+    "AR_Puntos ReemplazoML - CONVERSIONES",
+    "AR_Puntos SAMEDAY - CONVERSIONES"
+   ],
+   "since": "2026-10-06",
+   "weeks": [
+    0,
+    261,
+    207,
+    179,
+    213
+   ],
+   "clicks": [
+    0,
+    3095,
+    2293,
+    2072,
+    2356
+   ]
+  },
+  {
+   "id": "meta:ar_tn_onboarding_conversion",
+   "name": "ar_tn_onboarding_conversion",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "C2C Tienda Nube AR",
+   "campaigns": [
+    "AR_C2C_TiendaNube"
+   ],
+   "weeks": [
+    4,
+    7,
+    5,
+    7,
+    12
+   ],
+   "clicks": [
+    401,
+    614,
+    563,
+    869,
+    806
+   ]
+  },
+  {
+   "id": "meta:sellers_lead_calificado_ar",
+   "name": "sellers_lead_calificado_ar",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "B2B Sellers AR",
+   "campaigns": [
+    "AR_Hunting&SameDay_H2"
+   ],
+   "weeks": [
+    3,
+    2,
+    1,
+    1,
+    2
+   ],
+   "clicks": [
+    91,
+    121,
+    197,
+    181,
+    189
+   ]
+  },
+  {
+   "id": "meta:sellers_lead_calificado_mx",
+   "name": "sellers_lead_calificado_mx",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "B2B Sellers MX",
+   "campaigns": [
+    "MX_HUNTING_H2"
+   ],
+   "weeks": [
+    0,
+    0,
+    1,
+    1,
+    0
+   ],
+   "clicks": [
+    17,
+    22,
+    29,
+    69,
+    23
+   ]
+  },
+  {
+   "id": "meta:sellers_lead_calificado_pe",
+   "name": "sellers_lead_calificado_pe",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "B2B Sellers PE",
+   "campaigns": [
+    "PE_B2B_H2_FB_Conversiones_2026"
+   ],
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "clicks": [
+    33,
+    22,
+    26,
+    28,
+    33
+   ]
+  },
+  {
+   "id": "meta:lead_calificado_camionetas_mx",
+   "name": "lead_calificado_camionetas_mx",
+   "platform": "meta_ads",
+   "account_id": "act_4901263773324478",
+   "group": "Pickers Rentals MX",
+   "campaigns": [
+    "MX_Rentals_FB_Conversiones_2026_Geos"
+   ],
+   "since": "2026-10-26",
+   "weeks": [
+    0,
+    0,
+    0,
+    5,
+    62
+   ],
+   "clicks": [
+    0,
+    0,
+    0,
+    182,
+    2129
+   ]
+  }
+ ],
+ "campaigns": [
+  {
+   "name": "AR_Flex_SameDay_H2_GL_Search_2026_Performance",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    773620,
+    101752
+   ],
+   "results": [
+    53,
+    16
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "AR_Hunting_ECommerce_H2_GL_Search_2026_Performance",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    425626,
+    54196
+   ],
+   "results": [
+    3,
+    1.5
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "AR_Hunting_Fintech_H2_GL_Search_2026_Performance",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    463606,
+    107300
+   ],
+   "results": [
+    14,
+    3.5
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PE_Latam_Ecommerce&Retail_H2_GL_Search_2026_Performance",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    638377,
+    929299
+   ],
+   "results": [
+    1,
+    2
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "MX_Banca&Fintech_H2_GL_Search_2026_Performance",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    768634,
+    247507
+   ],
+   "results": [
+    50,
+    13
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "MX_Ecommerce&Shopify_H2_GL_Search_2026_Performance #2",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    724814,
+    170914
+   ],
+   "results": [
+    12,
+    2
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "MX_AgenciasUGC&Kits_H2_GL_Search_2026_Performance #2",
+   "platform": "google_ads",
+   "account": "Pickit - AR",
+   "kind": "conv",
+   "spend": [
+    574055,
+    102382
+   ],
+   "results": [
+    7,
+    1
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "AR_Hunting&SameDay_H2_FB_Conversiones_2026",
+   "platform": "meta_ads",
+   "account": "pickit - AR",
+   "kind": "conv",
+   "spend": [
+    232593,
+    62666
+   ],
+   "results": [
+    7,
+    2
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "AR_C2C_TiendaNube_FB_Conversiones_2026_Performance",
+   "platform": "meta_ads",
+   "account": "pickit - AR",
+   "kind": "conv",
+   "spend": [
+    896186,
+    239126
+   ],
+   "results": [
+    23,
+    12
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "MX_HUNTING_H2_FB_Conversiones_2026",
+   "platform": "meta_ads",
+   "account": "pickit - AR",
+   "kind": "conv",
+   "spend": [
+    141917,
+    22179
+   ],
+   "results": [
+    2,
+    0
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "PE_B2B_H2_FB_Conversiones_2026",
+   "platform": "meta_ads",
+   "account": "pickit - AR",
+   "kind": "conv",
+   "spend": [
+    80886,
+    15445
+   ],
+   "results": [
+    0,
+    0
+   ],
+   "prev_weeks": 4,
+   "new": false
+  },
+  {
+   "name": "AR_Puntos_FB_Leads_2026_ReemplazoML - CONVERSIONES",
+   "platform": "meta_ads",
+   "account": "pickit - AR",
+   "kind": "conv",
+   "spend": [
+    829617,
+    241590
+   ],
+   "results": [
+    241,
+    69
+   ],
+   "prev_weeks": 3,
+   "new": false
+  },
+  {
+   "name": "AR_Puntos_FB_Leads_2026_SAMEDAY - CONVERSIONES",
+   "platform": "meta_ads",
+   "account": "pickit - AR",
+   "kind": "conv",
+   "spend": [
+    382878,
+    182846
+   ],
+   "results": [
+    406,
+    144
+   ],
+   "prev_weeks": 3,
+   "new": false
+  },
+  {
+   "name": "MX_Rentals_FB_Conversiones_2026_Geos",
+   "platform": "meta_ads",
+   "account": "pickers - AR",
+   "kind": "conv",
+   "spend": [
+    294969,
+    519529
+   ],
+   "results": [
+    61,
+    62
+   ],
+   "prev_weeks": 1,
+   "new": true
+  }
+ ],
+ "no_delivery": [
+  {
+   "name": "AR_B2B_GL_Search_CyberMonday_2026",
+   "platform": "google_ads"
+  },
+  {
+   "name": "pickers AR - Installs_Enero2025",
+   "platform": "meta_ads"
+  },
+  {
+   "name": "pickers AR - Installs_Marzo2025",
+   "platform": "meta_ads"
+  },
+  {
+   "name": "pickers AR - Installs_septiembre 2025",
+   "platform": "meta_ads"
+  }
  ]
 }

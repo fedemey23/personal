@@ -42,6 +42,16 @@ Sumar por semana de martes a lunes. Los clics de cada acción son los de las cam
 
 Si Meta limita la cuenta, no reintentar: armar el termómetro con lo que haya y anotarlo en la respuesta.
 
+## Pestaña Inversión y entrega (por cuenta)
+
+- **Google Ads:** tres consultas por cuenta, todas con `campaign.status = 'ENABLED'` (sin segmentar por fecha, así también vuelven las campañas con cero impresiones):
+  1. Última semana: `campaign.id, campaign.name, campaign.advertising_channel_type, metrics.cost_micros, metrics.impressions, metrics.conversions`.
+  2. Las 4 semanas anteriores: `campaign.id, metrics.cost_micros, metrics.conversions`.
+  3. Semanas con gasto en esas 4 semanas: `segments.week, campaign.id, metrics.cost_micros` con `metrics.cost_micros > 0`. Sirve para no comparar contra un promedio inflado en campañas nuevas.
+- **Meta:** la misma llamada semanal a nivel campaña de la pestaña de conversiones, sumando `spend,impressions` a los `fields`. Para las activas sin entrega: `graph_api_request` GET `act_<id>/adsets` con `filtering` `effective_status IN [ACTIVE]` y `fields=id,name,campaign{name}`; las campañas con conjuntos activos y sin impresiones en la semana van a `no_delivery`.
+- Guardar en el snapshot `campaigns` (nombre, plataforma, cuenta, `kind` `conv` o `awareness`, `spend` y `results` como [4 semanas previas, semana], `prev_weeks`, `new`) y `no_delivery`. Alcance, tráfico, video, interacciones y teasers van como `awareness`.
+- Ojo: `campaign_conversion_goal` solo devuelve las campañas con metas propias. Las que usan las metas de la cuenta (por ejemplo Hogar, Moto y Salud Segura Max en Sancor Productos) también optimizan por las primarias de la cuenta: revisarlas en la pestaña de conversiones.
+
 ## Salida
 
 1. Guardar `data/<cliente>/<fecha de hoy>.json` con el formato del README (5 semanas por conversión, `daily` de la última semana si se leyó, `since` si la campaña arrancó en las últimas 2 semanas).

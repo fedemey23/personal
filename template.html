@@ -127,7 +127,7 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .spark .val small { font-family: var(--font-body); font-size: 11.5px; color: var(--mu); letter-spacing: 0; }
 
 [hidden] { display: none !important; }
-.view > main { width: 100%; }
+.view, .view > main { width: 100%; }
 .tabs { display: flex; gap: 4px; padding: 4px; background: var(--gray); border-radius: 100px; width: fit-content; max-width: 100%; }
 .tabs a { padding: 8px 18px; border-radius: 100px; font-size: 14px; font-weight: 500; color: var(--mu); text-decoration: none; white-space: nowrap; }
 .tabs a[aria-selected="true"] { background: var(--ink); color: var(--bg); }
@@ -139,23 +139,6 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .exec-list .who { font-weight: 700; }
 .exec-list .what { font-family: var(--font-mono); font-size: 13px; overflow-wrap: anywhere; }
 .exec-list .muted { color: var(--mu); }
-.drow { border: 1.5px solid var(--bdr); border-radius: 20px; background: var(--panel); overflow: hidden; }
-.dhead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; padding: 16px 22px; background: var(--gray); border-bottom: 1.5px solid var(--bdr); }
-.dhead h2 { font-size: 24px; letter-spacing: -.02em; }
-.dhead .facts { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13px; color: var(--mu); }
-.dhead .facts b { color: var(--ink); }
-.camp { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 6px 20px; padding: 14px 22px; align-items: start; }
-.camp + .camp { border-top: 1.5px solid var(--bdr); }
-.camp .name { font-family: var(--font-mono); font-size: 13.5px; font-weight: 600; overflow-wrap: anywhere; }
-.camp .flag { margin-top: 6px; font-size: 13.5px; color: var(--mu); max-width: 70ch; }
-.camp .flag .tag { margin-right: 6px; }
-.camp .nums { text-align: right; font-size: 12.5px; color: var(--mu); }
-.camp .nums b { display: block; font-family: var(--font-display); font-size: 20px; color: var(--ink); font-weight: 700; }
-.okline { padding: 12px 22px; font-size: 13px; color: var(--mu); border-top: 1.5px solid var(--bdr); }
-details.idle { padding: 12px 22px; border-top: 1.5px solid var(--bdr); font-size: 13px; color: var(--mu); }
-details.idle summary { cursor: pointer; }
-details.idle ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--font-mono); font-size: 12px; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .camp { grid-template-columns: minmax(0, 1fr); } .camp .nums { text-align: left; } }
 .scale { margin: -12px 0 0; font-size: 13px; color: var(--mu); max-width: 90ch; }
 .scale b { color: var(--ink); font-weight: 500; }
 .foot { font-size: 12.5px; color: var(--mu); border-top: 1.5px solid var(--bdr); padding-top: 14px; max-width: 80ch; }
@@ -175,7 +158,7 @@ details.idle ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--font-m
   <header class="hero">
     <div>
       <h1>Termómetro de <em>conversiones</em></h1>
-      <p>Auditoría semanal de cada cliente: si las conversiones por las que optimizan las campañas se están midiendo, y si la inversión va a campañas que dan resultado.</p>
+      <p>Auditoría semanal por pod: si las conversiones por las que optimizan las campañas de cada cliente se están midiendo bien.</p>
     </div>
     <div class="meta">
       <span class="mono" id="week"></span>
@@ -183,12 +166,9 @@ details.idle ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--font-m
     </div>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Secciones">
-    <a href="#conversiones" role="tab" id="tab-conversiones">Conversiones</a>
-    <a href="#inversion" role="tab" id="tab-inversion">Inversión y entrega</a>
-  </nav>
+  <nav class="tabs" role="tablist" aria-label="Pods" id="tabs"></nav>
 
-  <div id="view-conversiones" class="wrap view">
+  <div id="view-pod" class="wrap view">
   <section class="exec" aria-label="Resumen ejecutivo">
     <span class="mono">resumen /</span>
     <p class="exec-head" id="exec-head"></p>
@@ -208,23 +188,6 @@ details.idle ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--font-m
   <p class="foot">Solo lectura: se consulta SeePM y no se modifica nada en las cuentas. Se compara la última semana (martes a lunes) con las 4 anteriores, ajustando por clics, y los últimos 3 días contra el resto de la semana. Google cuenta por fecha de conversión y los eventos de app pueden llegar con un par de días de demora. Gris: volumen demasiado bajo para leer.</p>
   </div>
 
-  <div id="view-inversion" class="wrap view" hidden>
-  <section class="exec" aria-label="Resumen de inversión">
-    <span class="mono">resumen /</span>
-    <p class="exec-head" id="inv-head"></p>
-    <ul class="exec-list" id="inv-list"></ul>
-  </section>
-
-  <section class="legend" aria-label="Qué significa cada color">
-    <div><span class="tag rojo" data-shape="rojo" data-text="Sin resultados"></span><span><b>Gasta sin resultados</b><span class="t">Optimiza por una conversión, gastó y no trajo ninguna: en 5 semanas, o el doble de su costo habitual en la semana.</span></span></div>
-    <div><span class="tag amarillo" data-shape="amarillo"></span><span><b>Atención</b><span class="t">El costo por resultado se triplicó contra su historial, o la inversión se duplicó contra su promedio semanal.</span></span></div>
-    <div><span class="tag gris" data-shape="gris" data-text="Sin entrega"></span><span><b>Activa sin entrega</b><span class="t">Figura activa pero no tuvo impresiones en la semana. Es orden, no plata perdida.</span></span></div>
-  </section>
-
-  <main id="delivery" class="wrap" style="gap:18px"></main>
-
-  <p class="foot">Solo lectura. Inversión de la última semana (martes a lunes) contra las 4 anteriores. Resultados: las conversiones por las que optimiza cada campaña. Las campañas de alcance, tráfico o video y las que tienen menos de dos semanas no se evalúan por costo. Montos en ARS.</p>
-  </div>
 </div>
 
 <script>
@@ -298,7 +261,7 @@ function conv(item) {
 function render() {
   document.getElementById("week").textContent = `Semana del ${ddmm(DATA.week[0])} al ${ddmm(DATA.week[1])}`;
   document.getElementById("next").textContent = `Próxima actualización: martes ${ddmm(DATA.next)}`;
-  document.getElementById("clients").innerHTML = DATA.clients.map(c => {
+  document.getElementById("clients").innerHTML = DATA.clients.filter(c => c.pod === currentPod).map(c => {
     const alerts = ["rojo", "amarillo"].filter(l => c.items.some(i => i.level === l))
       .map(l => tag(l, `${c.items.filter(i => i.level === l).length} ${LABEL[l].toLowerCase()}`)).join("");
     const gray = c.items.filter(i => i.level === "gris").length;
@@ -306,7 +269,7 @@ function render() {
       <div class="side">${thermo(c.level, c.temp)}
         <div><h2>${esc(c.client)}</h2><div class="state">${tag(c.level, CLIENT_LABEL[c.level])}
           <span class="count"><b>${c.healthy} de ${c.readable}</b> funcionando bien${gray ? ` · ${gray} sin lectura` : ""}</span>
-          ${alerts}</div></div>
+          ${alerts}${(c.notes || []).map(n => `<span class="count">${esc(n)}</span>`).join("")}</div></div>
       </div>
       <div class="convs">${c.items.map(conv).join("")}</div>
     </section>`;
@@ -314,59 +277,30 @@ function render() {
 }
 const fmtMoney = v => "$" + Math.round(v).toLocaleString("es-AR");
 
-function renderSummary() {
-  document.getElementById("exec-head").textContent = DATA.summary.head;
-  document.getElementById("exec-list").innerHTML = DATA.summary.lines.map(l =>
-    `<li>${tag(l.level)}<span class="who">${esc(l.client)}</span><span class="what">${esc(l.name)}</span>
-     <span class="plat ${l.platform === "Meta" ? "meta" : "google"}">${esc(l.platform)}</span><span class="muted">${esc(l.text)}</span></li>`).join("");
-  document.getElementById("inv-head").textContent = DATA.delivery_summary.head;
-  const inv = DATA.clients.flatMap(c => c.delivery.items.filter(i => i.flags.length).map(i => ({ c, i })))
-    .sort((a, b) => ["rojo", "amarillo"].indexOf(a.i.level) - ["rojo", "amarillo"].indexOf(b.i.level));
-  document.getElementById("inv-list").innerHTML = inv.map(({ c, i }) =>
-    `<li>${tag(i.level, i.flags[0].title)}<span class="who">${esc(c.client)}</span><span class="what">${esc(i.name)}</span>
-     <span class="plat ${i.platform === "Meta" ? "meta" : "google"}">${esc(i.platform)}</span></li>`).join("")
-    + (DATA.delivery_summary.idle ? `<li class="muted">Además hay ${DATA.delivery_summary.idle} campañas activas sin entrega para ordenar.</li>` : "");
+const podSlug = name => name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+let currentPod = DATA.pods[0].name;
+
+function renderTabs() {
+  document.getElementById("tabs").innerHTML = DATA.pods.map(p =>
+    `<a href="#${podSlug(p.name)}" role="tab" aria-selected="${p.name === currentPod}">Pod ${esc(p.name)}</a>`).join("");
 }
 
-function renderDelivery() {
-  document.getElementById("delivery").innerHTML = DATA.clients.map(c => {
-    const d = c.delivery;
-    const flagged = d.items.filter(i => i.flags.length);
-    const ok = d.items.length - flagged.length;
-    const facts = [
-      `<span><b>${fmtMoney(d.spend)}</b> invertidos en la semana</span>`,
-      d.reds ? tag("rojo", `${d.reds} gasta sin resultados`) : "",
-      d.yellows ? tag("amarillo", `${d.yellows} atención`) : "",
-      !d.reds && !d.yellows ? tag("verde", "Sin alertas") : "",
-    ].join("");
-    const rows = flagged.map(i => `<article class="camp">
-        <div><div class="head"><span class="plat ${i.platform === "Meta" ? "meta" : "google"}">${esc(i.platform)}</span> <span class="name">${esc(i.name)}</span></div>
-          <div class="sub">${esc(i.account)}</div>
-          ${i.flags.map(f => `<div class="flag">${tag(f.level, f.title)}${esc(f.why)}</div>`).join("")}</div>
-        <div class="nums"><b>${fmtMoney(i.spend)}</b>esta semana · ${String(i.results).replace(".", ",")} resultados</div>
-      </article>`).join("");
-    const idle = d.no_delivery.length ? `<details class="idle"><summary>${d.no_delivery.length} activas sin entrega (figuran activas y no tuvieron impresiones)</summary>
-        <ul>${d.no_delivery.map(x => `<li>${esc(x.name)} · ${x.platform === "meta_ads" ? "Meta" : "Google Ads"}</li>`).join("")}</ul></details>` : "";
-    return `<section class="drow" aria-label="${esc(c.client)}">
-      <div class="dhead"><h2>${esc(c.client)}</h2><div class="facts">${facts}</div></div>
-      ${rows}
-      <div class="okline">${ok} ${ok === 1 ? "campaña" : "campañas"} con gasto en línea.</div>
-      ${idle}
-    </section>`;
-  }).join("");
+function renderSummary() {
+  const pod = DATA.pods.find(p => p.name === currentPod);
+  document.getElementById("exec-head").textContent = pod.summary.head;
+  document.getElementById("exec-list").innerHTML = pod.summary.lines.map(l =>
+    `<li>${tag(l.level)}<span class="who">${esc(l.client)}</span><span class="what">${esc(l.name)}</span>
+     <span class="plat ${l.platform === "Meta" ? "meta" : "google"}">${esc(l.platform)}</span><span class="muted">${esc(l.text)}</span></li>`).join("");
 }
 
 function route() {
-  const view = location.hash === "#inversion" ? "inversion" : "conversiones";
-  for (const v of ["conversiones", "inversion"]) {
-    document.getElementById(`view-${v}`).hidden = v !== view;
-    document.getElementById(`tab-${v}`).setAttribute("aria-selected", String(v === view));
-  }
+  const hit = DATA.pods.find(p => "#" + podSlug(p.name) === location.hash);
+  currentPod = (hit || DATA.pods[0]).name;
+  renderTabs();
+  renderSummary();
+  render();
 }
 
-render();
-renderSummary();
-renderDelivery();
 route();
 window.addEventListener("hashchange", route);
 </script>

@@ -1,0 +1,91 @@
+{
+ "client": "Chubb",
+ "pod": "Ari - Milly",
+ "seepm_client_id": "ef979fcd-f29f-47d9-bc71-91b54042d4c5",
+ "week": [
+  "2026-10-27",
+  "2026-11-02"
+ ],
+ "week_starts": [
+  "2026-09-29",
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27"
+ ],
+ "notes": [
+  "Meta (AR D2C Travel) sin permiso de lectura para SeePM: no se revisa."
+ ],
+ "conversions": [
+  {
+   "id": "gads:purchase",
+   "name": "purchase (web)",
+   "platform": "google_ads",
+   "account_id": "5617408542",
+   "group": "Venta",
+   "campaigns": [
+    "AR D2C Travel"
+   ],
+   "weeks": [
+    1,
+    0,
+    0,
+    0,
+    1
+   ],
+   "clicks": [
+    180,
+    156,
+    171,
+    145,
+    148
+   ],
+   "note": "Es la conversión que importa, pero las campañas no ofertan por ella."
+  },
+  {
+   "id": "gads:generated_quotation",
+   "name": "generated_quotation",
+   "platform": "google_ads",
+   "account_id": "5617408542",
+   "group": "Cotización",
+   "campaigns": [
+    "AR D2C Travel"
+   ],
+   "weeks": [
+    35,
+    26,
+    24,
+    38,
+    23
+   ],
+   "clicks": [
+    180,
+    156,
+    171,
+    145,
+    148
+   ],
+   "daily": {
+    "conv": [
+     5,
+     3,
+     5,
+     3,
+     2,
+     2,
+     3
+    ],
+    "clicks": [
+     12,
+     18,
+     13,
+     13,
+     30,
+     40,
+     22
+    ]
+   },
+   "note": "Es por la que ofertan las campañas de Google."
+  }
+ ]
+}

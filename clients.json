@@ -37,7 +37,8 @@
           "action_id": "7737562471",
           "name": "PE - Sellers - Lead Calificado"
         }
-      }
+      },
+      "pod": "Ari - Milly"
     },
     {
       "slug": "banco-del-sol",
@@ -67,7 +68,8 @@
           "name": "0. Web click to download"
         }
       ],
-      "notes": "Conversiones elegidas por el equipo. Las acciones las administra el MCC 4189571982: filtrar por nombre, no por resource name. Meta sin inversión desde jul-26."
+      "notes": "Conversiones elegidas por el equipo. Las acciones las administra el MCC 4189571982: filtrar por nombre, no por resource name. Meta sin inversión desde jul-26.",
+      "pod": "Ari - Milly"
     },
     {
       "slug": "sancor-seguros",
@@ -111,7 +113,8 @@
           "name": "Movilidad - Paso 4 - Venta Completa - Pixel AdWords"
         }
       },
-      "notes": "Agro Demand Gen y las campañas de tráfico/alcance de Meta (FAL, Energy Teaser, CyberMonday Teaser) no tienen conversión de optimización. TikTok fuera de alcance."
+      "notes": "Agro Demand Gen y las campañas de tráfico/alcance de Meta (FAL, Energy Teaser, CyberMonday Teaser) no tienen conversión de optimización. TikTok fuera de alcance.",
+      "pod": "Ari - Milly"
     },
     {
       "slug": "prevencion-salud",
@@ -138,7 +141,8 @@
           "name": "Conversación iniciada"
         }
       },
-      "notes": "Forms Leads no trae 'results' en insights: leer actions 'lead'. Píxel bloqueado por Meta desde el 24/09 (ver brain measurement.md)."
+      "notes": "Forms Leads no trae 'results' en insights: leer actions 'lead'. Píxel bloqueado por Meta desde el 24/09 (ver brain measurement.md).",
+      "pod": "Ari - Milly"
     },
     {
       "slug": "prevencion-retiro",
@@ -159,6 +163,114 @@
       "google_ads_goal_actions": {
         "5324690639 CONTACT/WEBSITE": {
           "name": "Pixel Google Ads - Contacto"
+        }
+      },
+      "pod": "Ari - Milly"
+    },
+    {
+      "slug": "chubb",
+      "name": "Chubb",
+      "pod": "Ari - Milly",
+      "seepm_client_id": "ef979fcd-f29f-47d9-bc71-91b54042d4c5",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "5617408542",
+          "name": "AR D2C Travel"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_2197647827672722",
+          "name": "AR D2C Travel",
+          "note": "sin permiso de lectura en SeePM"
+        }
+      ],
+      "conversions": [
+        {
+          "name": "purchase (web)",
+          "match": "conversion_action_name LIKE '%Subproperty (web) purchase'",
+          "metric": "all_conversions_by_conversion_date",
+          "why": "la conversión que importa según el equipo"
+        },
+        {
+          "name": "generated_quotation",
+          "match": "metrics.conversions (oferta)"
+        }
+      ]
+    },
+    {
+      "slug": "ppi",
+      "name": "PPI",
+      "pod": "Mate - Lu",
+      "seepm_client_id": "6d7d8802-3af9-4aba-92d1-e7141634fc34",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "3277825276",
+          "name": "PP Inversiones SA"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_2053861778185766",
+          "name": "Portfolio Personal Inversiones"
+        }
+      ],
+      "google_ads_goal_actions": {
+        "3277825276": {
+          "name": "Apertura Completada",
+          "excluded": "Lead (paso previo)"
+        }
+      }
+    },
+    {
+      "slug": "tai-loy",
+      "name": "Tai Loy",
+      "pod": "Mate - Lu",
+      "seepm_client_id": "5e4cd2ad-b020-47e9-9682-ceb316b5ee2f",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "7352725456",
+          "name": "Tai Loy Peru"
+        },
+        {
+          "platform": "google_ads",
+          "account_id": "2419966339",
+          "name": "TaiLoy - Ecommerce Bolivia"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_250928753709212",
+          "name": "Tai Loy Ecommerce - OFICIAL"
+        }
+      ],
+      "google_ads_goal_actions": {
+        "7352725456": {
+          "name": "Compra",
+          "excluded": "Page view (también es primaria)"
+        }
+      }
+    },
+    {
+      "slug": "almarena",
+      "name": "Almarena",
+      "pod": "Mate - Lu",
+      "seepm_client_id": "7cbfe204-a934-45cd-b67b-af4f44c95b88",
+      "accounts": [
+        {
+          "platform": "google_ads",
+          "account_id": "3580299114",
+          "name": "Almarena"
+        },
+        {
+          "platform": "meta_ads",
+          "account_id": "act_466429697126276",
+          "name": "Cuenta publicitaria Almarena"
+        }
+      ],
+      "google_ads_goal_actions": {
+        "3580299114": {
+          "name": "Compra (Zenda)"
         }
       }
     }

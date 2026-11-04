@@ -23,6 +23,13 @@ La semana va de martes a lunes y termina ayer. El termómetro compara esa semana
 
 ### Google Ads
 
+Forma recomendada (detecta también las campañas que usan las metas generales de la cuenta):
+
+- `SELECT segments.date, segments.conversion_action_name, metrics.conversions FROM customer WHERE segments.date BETWEEN '<inicio>' AND '<ayer>' AND metrics.conversions > 0`. `metrics.conversions` solo cuenta las acciones por las que ofertan las campañas: esas son las candidatas. Si hay varias del mismo embudo (Lead y Apertura Completada, Compra y Page view), quedarse con la del final, como indica `clients.json`.
+- Clics diarios de la cuenta: `SELECT segments.date, metrics.clicks FROM customer WHERE segments.date BETWEEN '<inicio>' AND '<ayer>'`.
+
+Forma anterior, usada en Pickit, Banco del Sol y Sancor (puede dejar afuera campañas sin metas propias):
+
 1. Metas de las campañas activas:
    `SELECT campaign.id, campaign.name, campaign_conversion_goal.category, campaign_conversion_goal.origin FROM campaign_conversion_goal WHERE campaign.status = 'ENABLED' AND campaign_conversion_goal.biddable = TRUE`
    Si las metas no cambiaron respecto a `clients.json`, usar las acciones ya elegidas ahí. Si cambiaron, consultar las primarias (`conversion_action.primary_for_goal = TRUE`) y elegir de nuevo.
@@ -42,15 +49,11 @@ Sumar por semana de martes a lunes. Los clics de cada acción son los de las cam
 
 Si Meta limita la cuenta, no reintentar: armar el termómetro con lo que haya y anotarlo en la respuesta.
 
-## Pestaña Inversión y entrega (por cuenta)
+## Pods
 
-- **Google Ads:** tres consultas por cuenta, todas con `campaign.status = 'ENABLED'` (sin segmentar por fecha, así también vuelven las campañas con cero impresiones):
-  1. Última semana: `campaign.id, campaign.name, campaign.advertising_channel_type, metrics.cost_micros, metrics.impressions, metrics.conversions`.
-  2. Las 4 semanas anteriores: `campaign.id, metrics.cost_micros, metrics.conversions`.
-  3. Semanas con gasto en esas 4 semanas: `segments.week, campaign.id, metrics.cost_micros` con `metrics.cost_micros > 0`. Sirve para no comparar contra un promedio inflado en campañas nuevas.
-- **Meta:** la misma llamada semanal a nivel campaña de la pestaña de conversiones, sumando `spend,impressions` a los `fields`. Para las activas sin entrega: `graph_api_request` GET `act_<id>/adsets` con `filtering` `effective_status IN [ACTIVE]` y `fields=id,name,campaign{name}`; las campañas con conjuntos activos y sin impresiones en la semana van a `no_delivery`.
-- Guardar en el snapshot `campaigns` (nombre, plataforma, cuenta, `kind` `conv` o `awareness`, `spend` y `results` como [4 semanas previas, semana], `prev_weeks`, `new`) y `no_delivery`. Alcance, tráfico, video, interacciones y teasers van como `awareness`.
-- Ojo: `campaign_conversion_goal` solo devuelve las campañas con metas propias. Las que usan las metas de la cuenta (por ejemplo Hogar, Moto y Salud Segura Max en Sancor Productos) también optimizan por las primarias de la cuenta: revisarlas en la pestaña de conversiones.
+Cada cliente de `clients.json` tiene un `pod` y el snapshot lo lleva en `pod`. El termómetro arma una pestaña por pod, con su resumen ejecutivo:
+- **Ari - Milly:** Banco del Sol, Sancor Seguros (con Prevención Salud y Prevención Retiro), Pickit y Chubb.
+- **Mate - Lu:** PPI, Tai Loy y Almarena.
 
 ## Salida
 

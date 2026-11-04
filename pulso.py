@@ -67,11 +67,25 @@ def evaluate(item, week_start):
         c4, k4 = sum(daily["conv"][:4]), sum(daily["clicks"][:4])
         c3, k3 = sum(daily["conv"][4:]), sum(daily["clicks"][4:])
         expected3 = c4 / k4 * k3 if k4 else 0
+        if k4 and k3 / 3 > 1.5 * k4 / 4:
+            expected3 = c4 / 4 * 3  # con más tráfico la tasa no es comparable: se espera el mismo volumen diario
         if expected3 >= 10 and c3 < 0.4 * expected3:
             return res("amarillo", "Cayó en los últimos 3 días",
                        f"Venía en {miles(c4 / 4)} por día y en los últimos 3 días bajó a {miles(c3 / 3)}, "
                        f"con los clics estables ({miles(k4 / 4)} → {miles(k3 / 3)} por día). Puede ser demora en "
                        "el reporte del evento o una rotura: si sigue así el miércoles, revisar.")
+
+    base_clicks_weekly = base_clicks / len(base) if base else 0
+    if not recent and base_clicks_weekly and last_clicks > 2 * base_clicks_weekly:
+        # Con el tráfico más que duplicado (un Cyber, una campaña nueva de alcance) la tasa de conversión
+        # no es comparable: se mira el volumen bruto.
+        if last < 0.6 * weekly:
+            return res("amarillo", "Bajó con más tráfico",
+                       f"{miles(last)} esta semana contra {n(weekly)} de promedio, con {n(last_clicks / base_clicks_weekly)} "
+                       "veces más clics de lo habitual.")
+        return res("verde", "En línea",
+                   f"{miles(last)} esta semana contra {n(weekly)} de promedio. El tráfico fue {n(last_clicks / base_clicks_weekly)} "
+                   "veces el habitual, así que se compara el volumen y no la tasa.")
 
     if not recent and cvr:
         expected = cvr * last_clicks
@@ -101,70 +115,6 @@ def client_temperature(items):
     return {"level": level, "temp": round(temp, 3), "healthy": len(readable) - reds - yellows, "readable": len(readable)}
 
 
-MIN_SPEND = 10_000      # debajo de esto una campaña sin resultados no se marca
-JUMP_MIN = 100_000      # diferencia mínima para marcar un salto de inversión
-
-
-def money(v):
-    return "$" + miles(v)
-
-
-def evaluate_campaign(c, account_cpa, account_spend):
-    """Pestaña de inversión: gasto sin resultados, costo disparado o salto de inversión."""
-    prev_spend, spend = c["spend"]
-    prev_res, res = c["results"]
-    weekly = prev_spend / c["prev_weeks"] if c["prev_weeks"] else 0
-    own_cpa = prev_spend / prev_res if prev_res else None
-    cpa = spend / res if res else None
-    flags = []
-
-    if c["kind"] == "conv" and not c["new"]:
-        if res == 0 and spend >= MIN_SPEND:
-            if prev_res == 0:
-                flags.append(("rojo", "Gasta sin resultados",
-                              f"Sin resultados en 5 semanas con {money(prev_spend + spend)} invertidos ({money(spend)} esta semana)."))
-            elif spend >= 2 * own_cpa:
-                flags.append(("rojo", "Gasta sin resultados",
-                              f"{money(spend)} esta semana y ningún resultado; su costo habitual es {money(own_cpa)} por resultado."))
-        if cpa and own_cpa and prev_res >= 3 and cpa >= 3 * own_cpa:
-            flags.append(("amarillo", f"Costo por resultado ×{n(cpa / own_cpa)}",
-                          f"{money(cpa)} por resultado esta semana contra {money(own_cpa)} de su historial "
-                          f"({n(res)} resultados con {money(spend)})."))
-    if not c["new"] and c["prev_weeks"] >= 2 and spend >= 2 * weekly and spend - weekly >= JUMP_MIN:
-        context = ""
-        if c["kind"] == "conv" and cpa and account_cpa and cpa >= 3 * account_cpa:
-            context = (f" Es el {round(spend / account_spend * 100)}% de la inversión de la cuenta y cuesta "
-                       f"{money(cpa)} por resultado, {n(cpa / account_cpa)} veces el promedio de la cuenta.")
-        flags.append(("amarillo", f"Inversión ×{n(spend / weekly)}",
-                      f"{money(spend)} esta semana contra {money(weekly)} por semana en las anteriores." + context))
-
-    level = min((f[0] for f in flags), key=LEVELS.index, default="verde")
-    return {"name": c["name"], "platform": PLATFORM[c["platform"]], "account": c["account"], "kind": c["kind"],
-            "new": c["new"], "spend": spend, "results": res, "cpa": cpa, "own_cpa": own_cpa, "level": level,
-            "flags": [{"level": f[0], "title": f[1], "why": f[2]} for f in flags]}
-
-
-def delivery(snap):
-    camps = snap.get("campaigns", [])
-    by_account = {}
-    for c in camps:
-        a = by_account.setdefault(c["account"], {"spend": 0, "prev": 0, "res": 0})
-        a["spend"] += c["spend"][1]
-        if c["kind"] == "conv" and not c["new"]:
-            a["prev"] += c["spend"][0]
-            a["res"] += c["results"][0]
-    items = []
-    for c in camps:
-        a = by_account[c["account"]]
-        items.append(evaluate_campaign(c, a["prev"] / a["res"] if a["res"] else None, a["spend"]))
-    items.sort(key=lambda i: (LEVELS.index(i["level"]), -i["spend"]))
-    flagged = [i for i in items if i["level"] in ("rojo", "amarillo")]
-    return {"items": items, "no_delivery": snap.get("no_delivery", []),
-            "spend": sum(i["spend"] for i in items), "flagged_spend": sum(i["spend"] for i in flagged),
-            "reds": sum(1 for i in flagged if i["level"] == "rojo"),
-            "yellows": sum(1 for i in flagged if i["level"] == "amarillo")}
-
-
 def summary(clients):
     """Resumen ejecutivo de la pestaña de conversiones: una frase y una línea por alerta."""
     readable = sum(c["readable"] for c in clients)
@@ -185,20 +135,6 @@ def summary(clients):
     return {"head": head, "lines": lines}
 
 
-def delivery_summary(clients):
-    reds = sum(c["delivery"]["reds"] for c in clients)
-    yellows = sum(c["delivery"]["yellows"] for c in clients)
-    spend = sum(c["delivery"]["spend"] for c in clients)
-    flagged = sum(c["delivery"]["flagged_spend"] for c in clients)
-    idle = sum(len(c["delivery"]["no_delivery"]) for c in clients)
-    if not reds and not yellows:
-        head = f"Sin alertas de inversión: {money(spend)} invertidos en la semana."
-    else:
-        head = (f"{money(flagged)} de {money(spend)} invertidos esta semana están en campañas con alertas "
-                f"({round(flagged / spend * 100)}%).")
-    return {"head": head, "idle": idle}
-
-
 def build(paths):
     clients, week = [], None
     for path in paths:
@@ -210,12 +146,14 @@ def build(paths):
                   **evaluate(i, start)}
                  for i in snap["conversions"]]
         items.sort(key=lambda i: (LEVELS.index(i["level"]), i["platform"], i["group"]))
-        clients.append({"client": snap["client"], **client_temperature(items), "items": items,
-                        "delivery": delivery(snap)})
+        clients.append({"client": snap["client"], "pod": snap.get("pod", "Sin pod"), "notes": snap.get("notes", []),
+                        **client_temperature(items), "items": items})
     clients.sort(key=lambda c: (-c["temp"], c["client"]))
     week_starts = json.loads(paths[0].read_text()).get("week_starts", [])
     return {"week": week, "week_starts": week_starts, "next": (date.fromisoformat(week[1]) + timedelta(days=8)).isoformat(),
-            "clients": clients, "summary": summary(clients), "delivery_summary": delivery_summary(clients)}
+            "clients": clients,
+            "pods": [{"name": pod, "summary": summary([c for c in clients if c["pod"] == pod])}
+                     for pod in dict.fromkeys(c["pod"] for c in clients)]}
 
 
 def main():
@@ -232,13 +170,12 @@ def main():
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(html)
 
-    print(data["summary"]["head"])
-    print(data["delivery_summary"]["head"])
+    for pod in data["pods"]:
+        print(f"Pod {pod['name']}: {pod['summary']['head']}")
     for c in data["clients"]:
-        print(f"{c['client']}: {c['level']}")
-        for i in c["delivery"]["items"]:
-            if i["flags"]:
-                print(f"  [{i['level']:>8}] {i['name']} · " + " / ".join(f["title"] for f in i["flags"]))
+        print(f"{c['client']} ({c['pod']}): {c['level']}")
+        for i in c["items"]:
+            print(f"  [{i['level']:>8}] {i['name']} · {i['title']}")
 
 
 if __name__ == "__main__":

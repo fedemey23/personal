@@ -1,0 +1,88 @@
+{
+ "client": "PPI",
+ "pod": "Mate - Lu",
+ "seepm_client_id": "6d7d8802-3af9-4aba-92d1-e7141634fc34",
+ "week": [
+  "2026-10-27",
+  "2026-11-02"
+ ],
+ "week_starts": [
+  "2026-09-29",
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27"
+ ],
+ "conversions": [
+  {
+   "id": "gads:apertura_completada",
+   "name": "Apertura Completada",
+   "platform": "google_ads",
+   "account_id": "3277825276",
+   "group": "Apertura de cuenta",
+   "campaigns": [
+    "PP Inversiones SA"
+   ],
+   "weeks": [
+    230.6,
+    220.3,
+    229.3,
+    214.2,
+    243.0
+   ],
+   "clicks": [
+    11916,
+    10402,
+    11311,
+    10692,
+    10993
+   ],
+   "daily": {
+    "conv": [
+     41.0,
+     45,
+     46.0,
+     33,
+     35,
+     15,
+     28
+    ],
+    "clicks": [
+     1931,
+     1698,
+     1904,
+     1690,
+     975,
+     1059,
+     1736
+    ]
+   },
+   "note": "Google también oferta por Lead, el paso previo."
+  },
+  {
+   "id": "meta:271994297064124",
+   "name": "Aperturas",
+   "platform": "meta_ads",
+   "account_id": "act_2053861778185766",
+   "group": "Apertura de cuenta",
+   "campaigns": [
+    "Banca Digital - AO",
+    "Banca Digital - AO - Mujeres"
+   ],
+   "weeks": [
+    9,
+    10,
+    9,
+    14,
+    21
+   ],
+   "clicks": [
+    802,
+    837,
+    674,
+    678,
+    657
+   ]
+  }
+ ]
+}

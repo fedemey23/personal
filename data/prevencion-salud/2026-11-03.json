@@ -37,7 +37,8 @@
     5594,
     287
    ],
-   "note": "Causa conocida: Meta bloquea el dominio del cotizador desde el 24/09 y el reclamo se envió el 13/10. Las campañas optimizan sin señal."
+   "note": "Causa conocida: Meta bloquea el dominio del cotizador desde el 24/09 y el reclamo se envió el 13/10. Las campañas optimizan sin señal.",
+   "label": "Confirmación de cotización (paso 3)"
   },
   {
    "id": "gads:428638548",
@@ -82,7 +83,8 @@
      24,
      175
     ]
-   }
+   },
+   "label": "Cotización completa"
   },
   {
    "id": "gads:conversacion_iniciada",
@@ -108,7 +110,8 @@
     0,
     25
    ],
-   "note": "Hasta el 28/10 llegaban unas 60 por día desde otra campaña que ya no está activa."
+   "note": "Hasta el 28/10 llegaban unas 60 por día desde otra campaña que ya no está activa.",
+   "label": "Conversación de WhatsApp · Plan ION"
   },
   {
    "id": "meta:forms_leads",
@@ -132,7 +135,8 @@
     92,
     149,
     116
-   ]
+   ],
+   "label": "Lead de formulario instantáneo"
   },
   {
    "id": "meta:messaging_conversation_started",
@@ -157,7 +161,8 @@
     938,
     848,
     802
-   ]
+   ],
+   "label": "Conversación de WhatsApp"
   }
  ],
  "pod": "Ari - Milly"

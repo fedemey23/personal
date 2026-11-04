@@ -40,7 +40,9 @@
     145,
     148
    ],
-   "note": "Es la conversión que importa, pero las campañas no ofertan por ella."
+   "note": "Es la conversión que importa, pero las campañas no ofertan por ella.",
+   "label": "Compra de seguro de viaje",
+   "campaign_scope": "account"
   },
   {
    "id": "gads:generated_quotation",
@@ -85,7 +87,9 @@
      22
     ]
    },
-   "note": "Es por la que ofertan las campañas de Google."
+   "note": "Es por la que ofertan las campañas de Google.",
+   "label": "Cotización generada",
+   "campaign_scope": "account"
   }
  ]
 }

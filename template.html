@@ -110,6 +110,8 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .plat.google { --plat: var(--p-google); }
 .plat.meta { --plat: var(--p-meta); }
 .side .count b { color: var(--ink); font-weight: 700; }
+.conv .label { margin: 8px 0 2px; font-family: var(--font-display); font-size: 21px; line-height: 1.15; letter-spacing: -.02em; font-weight: 700; text-wrap: balance; }
+.conv .tech { font-family: var(--font-mono); font-size: 11.5px; overflow-wrap: anywhere; }
 .conv .name { font-family: var(--font-mono); font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
 .conv .sub { font-size: 12px; color: var(--mu); }
 .conv .why { margin: 4px 0 0; font-size: 13.5px; color: var(--mu); max-width: 64ch; }
@@ -137,7 +139,7 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .exec-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .exec-list li { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 14px; }
 .exec-list .who { font-weight: 700; }
-.exec-list .what { font-family: var(--font-mono); font-size: 13px; overflow-wrap: anywhere; }
+.exec-list .what { font-size: 14px; overflow-wrap: anywhere; }
 .exec-list .muted { color: var(--mu); }
 .scale { margin: -12px 0 0; font-size: 13px; color: var(--mu); max-width: 90ch; }
 .scale b { color: var(--ink); font-weight: 500; }
@@ -244,8 +246,9 @@ function spark(item) {
 function conv(item) {
   return `<article class="conv">
     <div>
-      <div class="head">${tag(item.level, item.title)}<span class="plat ${item.platform === "Meta" ? "meta" : "google"}">${esc(item.platform)}</span><span class="name">${esc(item.name)}</span></div>
-      <div class="sub">${esc(item.group)} · ${esc(item.campaigns.join(", "))}</div>
+      <div class="head">${tag(item.level, item.title)}<span class="plat ${item.platform === "Meta" ? "meta" : "google"}">${esc(item.platform)}</span></div>
+      <h3 class="label">${esc(item.label)}</h3>
+      <div class="sub"><span class="tech">${esc(item.name)}</span> · <span title="${esc(item.campaigns.join(", "))}">${esc(item.usage)}</span></div>
       <p class="why">${esc(item.why)}${item.note ? ` <strong>${esc(item.note)}</strong>` : ""}</p>
     </div>
     <div class="spark">
@@ -289,7 +292,7 @@ function renderSummary() {
   const pod = DATA.pods.find(p => p.name === currentPod);
   document.getElementById("exec-head").textContent = pod.summary.head;
   document.getElementById("exec-list").innerHTML = pod.summary.lines.map(l =>
-    `<li>${tag(l.level)}<span class="who">${esc(l.client)}</span><span class="what">${esc(l.name)}</span>
+    `<li>${tag(l.level)}<span class="who">${esc(l.client)}</span><span class="what">${esc(l.label)}</span>
      <span class="plat ${l.platform === "Meta" ? "meta" : "google"}">${esc(l.platform)}</span><span class="muted">${esc(l.text)}</span></li>`).join("");
 }
 

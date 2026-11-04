@@ -35,7 +35,8 @@
     654,
     570,
     639
-   ]
+   ],
+   "label": "Formulario de cotización enviado"
   },
   {
    "id": "gads:365195478",
@@ -79,7 +80,9 @@
      129,
      179
     ]
-   }
+   },
+   "label": "Formulario de contacto",
+   "campaign_count": 3
   }
  ],
  "pod": "Ari - Milly"

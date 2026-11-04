@@ -37,7 +37,9 @@
     5831,
     5219,
     4935
-   ]
+   ],
+   "label": "Reserva en el motor web",
+   "campaign_scope": "account"
   },
   {
    "id": "meta:messaging",
@@ -63,7 +65,8 @@
     1069,
     929,
     656
-   ]
+   ],
+   "label": "Conversación por mensaje"
   },
   {
    "id": "meta:add_to_cart",
@@ -87,7 +90,8 @@
     149,
     163,
     190
-   ]
+   ],
+   "label": "Agregar al carrito del motor web"
   }
  ]
 }

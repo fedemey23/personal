@@ -55,7 +55,9 @@
      877,
      1436
     ]
-   }
+   },
+   "label": "Cotización completa · Auto",
+   "campaign_count": 3
   },
   {
    "id": "gads:ap_cotizacion_completa",
@@ -100,7 +102,8 @@
      162
     ]
    },
-   "note": "A confirmar: la campaña optimiza también por los Paso 3."
+   "note": "A confirmar: la campaña optimiza también por los Paso 3.",
+   "label": "Cotización completa · Accidentes Personales"
   },
   {
    "id": "gads:246175663",
@@ -144,7 +147,9 @@
      77,
      188
     ]
-   }
+   },
+   "label": "Contacto · Vida Ahorro Inversión",
+   "campaign_count": 3
   },
   {
    "id": "gads:movilidad_paso4",
@@ -188,7 +193,9 @@
      79,
      280
     ]
-   }
+   },
+   "label": "Venta completa · Movilidad",
+   "campaign_count": 3
   },
   {
    "id": "meta:1097231273985927",
@@ -212,7 +219,8 @@
     85,
     86,
     53
-   ]
+   ],
+   "label": "Cotización, paso 2 · Moto"
   },
   {
    "id": "meta:auto_p2_cotizacion",
@@ -236,7 +244,8 @@
     2279,
     2236,
     2507
-   ]
+   ],
+   "label": "Cotización, paso 2 · Auto"
   },
   {
    "id": "meta:188388321721044",
@@ -260,7 +269,8 @@
     26,
     41,
     29
-   ]
+   ],
+   "label": "Contacto · Vida Ahorro Inversión"
   },
   {
    "id": "meta:6816657778402206",
@@ -284,7 +294,8 @@
     609,
     573,
     532
-   ]
+   ],
+   "label": "Lead, paso 2 · Movilidad"
   },
   {
    "id": "meta:361858807994218",
@@ -308,7 +319,8 @@
     1031,
     1308,
     666
-   ]
+   ],
+   "label": "Cotización completa · Accidentes Personales"
   },
   {
    "id": "meta:lead_caucion",
@@ -332,7 +344,8 @@
     91,
     74,
     76
-   ]
+   ],
+   "label": "Lead · Caución de Alquiler"
   }
  ],
  "pod": "Ari - Milly"

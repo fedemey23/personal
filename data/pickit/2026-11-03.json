@@ -37,7 +37,8 @@
     267,
     448,
     218
-   ]
+   ],
+   "label": "Lead calificado de sellers · Argentina"
   },
   {
    "id": "gads:7735155969",
@@ -63,7 +64,8 @@
     262,
     361,
     429
-   ]
+   ],
+   "label": "Lead calificado de sellers · México"
   },
   {
    "id": "gads:7737562471",
@@ -88,7 +90,8 @@
     8,
     160
    ],
-   "last_seen": "2026-09-10"
+   "last_seen": "2026-09-10",
+   "label": "Lead calificado de sellers · Perú"
   },
   {
    "id": "meta:lead_calificado_puntos_ar",
@@ -114,7 +117,8 @@
     2293,
     2072,
     2356
-   ]
+   ],
+   "label": "Lead calificado de Puntos · Argentina"
   },
   {
    "id": "meta:ar_tn_onboarding_conversion",
@@ -138,7 +142,8 @@
     563,
     869,
     806
-   ]
+   ],
+   "label": "Onboarding Tienda Nube (C2C)"
   },
   {
    "id": "meta:sellers_lead_calificado_ar",
@@ -162,7 +167,8 @@
     197,
     181,
     189
-   ]
+   ],
+   "label": "Lead calificado de sellers · Argentina"
   },
   {
    "id": "meta:sellers_lead_calificado_mx",
@@ -186,7 +192,8 @@
     29,
     69,
     23
-   ]
+   ],
+   "label": "Lead calificado de sellers · México"
   },
   {
    "id": "meta:sellers_lead_calificado_pe",
@@ -210,7 +217,8 @@
     26,
     28,
     33
-   ]
+   ],
+   "label": "Lead calificado de sellers · Perú"
   },
   {
    "id": "meta:lead_calificado_camionetas_mx",
@@ -235,7 +243,8 @@
     0,
     182,
     2129
-   ]
+   ],
+   "label": "Lead calificado Rentals · México"
   }
  ],
  "pod": "Ari - Milly"

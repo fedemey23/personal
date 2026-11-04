@@ -56,7 +56,8 @@
      277,
      348
     ]
-   }
+   },
+   "label": "Onboarding completo en la app (Android)"
   },
   {
    "id": "gads:462131657",
@@ -103,7 +104,8 @@
      5798,
      5284
     ]
-   }
+   },
+   "label": "Clic para descargar la app (web)"
   }
  ],
  "pod": "Ari - Milly"

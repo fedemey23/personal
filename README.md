@@ -40,6 +40,7 @@ Cuando el tráfico de la semana más que duplica el habitual (por ejemplo, un Cy
     {
       "id": "gads:7732517673",
       "name": "AR - Sellers - Lead Calificado",
+      "label": "Lead calificado de sellers · Argentina",
       "platform": "google_ads",
       "account_id": "6727245662",
       "group": "B2B Sellers AR",

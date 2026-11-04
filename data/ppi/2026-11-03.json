@@ -57,7 +57,9 @@
      1736
     ]
    },
-   "note": "Google también oferta por Lead, el paso previo."
+   "note": "Google también oferta por Lead, el paso previo.",
+   "label": "Apertura de cuenta completada",
+   "campaign_scope": "account"
   },
   {
    "id": "meta:271994297064124",
@@ -82,7 +84,8 @@
     674,
     678,
     657
-   ]
+   ],
+   "label": "Apertura de cuenta"
   }
  ]
 }

@@ -60,7 +60,9 @@
      54433
     ]
    },
-   "note": "Las campañas también ofertan por Page view."
+   "note": "Las campañas también ofertan por Page view.",
+   "label": "Compra online · Perú",
+   "campaign_scope": "account"
   },
   {
    "id": "meta:purchase",
@@ -88,7 +90,8 @@
     40929,
     63013,
     163659
-   ]
+   ],
+   "label": "Compra online"
   }
  ]
 }

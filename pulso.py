@@ -115,6 +115,14 @@ def client_temperature(items):
     return {"level": level, "temp": round(temp, 3), "healthy": len(readable) - reds - yellows, "readable": len(readable)}
 
 
+def usage(item):
+    """Resumen de dónde se usa la conversión: la lista completa queda como detalle."""
+    if item.get("campaign_scope") == "account":
+        return "Todas las campañas de la cuenta"
+    count = item.get("campaign_count", len(item["campaigns"]))
+    return f"Usada en {count} {'campaña' if count == 1 else 'campañas'}"
+
+
 def summary(clients):
     """Resumen ejecutivo de la pestaña de conversiones: una frase y una línea por alerta."""
     readable = sum(c["readable"] for c in clients)
@@ -129,7 +137,7 @@ def summary(clients):
                              f"{yellows} con atención" if yellows else "") if p]
         head = f"{healthy} de {readable} conversiones funcionan bien. " + " y ".join(parts).capitalize() + "."
     alerts.sort(key=lambda a: LEVELS.index(a[1]["level"]))
-    lines = [{"level": i["level"], "client": cl, "name": i["name"], "platform": i["platform"],
+    lines = [{"level": i["level"], "client": cl, "name": i["name"], "label": i["label"], "platform": i["platform"],
               "text": i["title"] + (" · causa conocida" if i.get("note", "") and "Causa conocida" in i["note"] else "")}
              for cl, i in alerts]
     return {"head": head, "lines": lines}
@@ -141,7 +149,8 @@ def build(paths):
         snap = json.loads(path.read_text())
         week = snap["week"]
         start = date.fromisoformat(week[0])
-        items = [{"name": i["name"], "platform": PLATFORM[i["platform"]], "group": i["group"],
+        items = [{"name": i["name"], "label": i.get("label", i["name"]), "platform": PLATFORM[i["platform"]],
+                  "group": i["group"], "usage": usage(i),
                   "campaigns": i["campaigns"], "weeks": i["weeks"], "clicks": i["clicks"], "note": i.get("note"),
                   **evaluate(i, start)}
                  for i in snap["conversions"]]

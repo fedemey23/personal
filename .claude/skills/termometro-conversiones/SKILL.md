@@ -57,6 +57,8 @@ Si Meta limita la cuenta, no reintentar: armar el termómetro con lo que haya y 
   - la comparación por volumen cuando el tráfico se duplica;
   - la caída de los últimos 3 días.
 - Si una alerta tiene una causa ya conocida (por ejemplo, el píxel de Prevención Salud bloqueado por Meta), agregarla en el campo `note` de esa conversión en el snapshot. El termómetro la muestra en la tarjeta y en el resumen.
+- Cada conversión lleva un `label` legible, que es lo que se ve como título: qué es y de qué producto o país (por ejemplo "Lead calificado de sellers · Perú" para `sellers_lead_calificado_pe`). El nombre técnico queda chico debajo. Reusar el `label` del snapshot anterior; solo inventar uno para conversiones nuevas.
+- Las campañas se resumen como "Usada en N campañas". Si la lista guardada agrupa varias campañas en un nombre, poner el número real en `campaign_count`; si la conversión cubre toda la cuenta, `campaign_scope: "account"`.
 - Avisos por cliente que no son alertas van en `notes` del snapshot (por ejemplo, que la cuenta de Meta de Chubb no da permiso de lectura).
 
 ## Pods

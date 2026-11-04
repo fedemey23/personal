@@ -22,7 +22,7 @@ python3 pulso.py data/pickit/2026-11-03.json data/banco-del-sol/2026-11-03.json 
 | Verde · todo bien | En línea con su historial, o nueva y registrando conversiones. |
 | Gris · sin lectura | Convierte tan poco que un cero no indica nada. |
 
-"Lo esperado" es la tasa de conversión sobre clics de las 4 semanas anteriores aplicada a los clics de la última. Así una baja de tráfico no se confunde con una rotura de medición. El termómetro de cada cliente toma el color de su peor conversión.
+"Lo esperado" es la tasa de conversión sobre clics de las 4 semanas anteriores aplicada a los clics de la última. Así una baja de tráfico no se confunde con una rotura de medición. El termómetro de cada cliente mide qué parte de sus conversiones tiene alertas (rojo cuenta 1, amarillo 0,5; las grises no cuentan): hasta 20% queda en bien, hasta 50% en atención y arriba en crítico. Cada conversión muestra su plataforma.
 
 ## Formato del snapshot
 

@@ -87,6 +87,20 @@ def evaluate(item, week_start):
     return res("verde", "En línea", f"{miles(last)} esta semana contra {n(weekly)} de promedio.")
 
 
+def client_temperature(items):
+    """Temperatura del cliente: qué parte de sus conversiones tiene alertas (rojo pesa 1, amarillo 0,5).
+
+    Hasta 20% el cliente queda verde aunque tenga alguna alerta, hasta 50% amarillo, arriba rojo.
+    Las conversiones sin lectura no cuentan.
+    """
+    readable = [i for i in items if i["level"] != "gris"]
+    reds = sum(1 for i in readable if i["level"] == "rojo")
+    yellows = sum(1 for i in readable if i["level"] == "amarillo")
+    temp = (reds + 0.5 * yellows) / len(readable) if readable else 0
+    level = "verde" if temp < 0.2 else "amarillo" if temp < 0.5 else "rojo"
+    return {"level": level, "temp": round(temp, 3), "healthy": len(readable) - reds - yellows, "readable": len(readable)}
+
+
 def build(paths):
     clients, week = [], None
     for path in paths:
@@ -98,8 +112,8 @@ def build(paths):
                   **evaluate(i, start)}
                  for i in snap["conversions"]]
         items.sort(key=lambda i: (LEVELS.index(i["level"]), i["platform"], i["group"]))
-        clients.append({"client": snap["client"], "level": items[0]["level"], "items": items})
-    clients.sort(key=lambda c: (LEVELS.index(c["level"]), c["client"]))
+        clients.append({"client": snap["client"], **client_temperature(items), "items": items})
+    clients.sort(key=lambda c: (-c["temp"], c["client"]))
     week_starts = json.loads(paths[0].read_text()).get("week_starts", [])
     return {"week": week, "week_starts": week_starts, "next": (date.fromisoformat(week[1]) + timedelta(days=8)).isoformat(),
             "clients": clients}

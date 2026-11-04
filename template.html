@@ -27,6 +27,8 @@
   --gris: rgba(10,10,11,.55);
   --gris-bg: rgba(10,10,11,.06);
   --gris-fill: #B9BDB6;
+  --p-google: #4285F4;
+  --p-meta: #1877F2;
   --font-display: 'Recoleta Alt', Georgia, 'Times New Roman', serif;
   --font-body: 'Circular Std', -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', ui-monospace, Menlo, monospace;
@@ -85,9 +87,9 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .tag.gris { background: var(--gris-bg); color: var(--gris); }
 .tag svg { fill: currentColor; }
 
-.row { display: grid; grid-template-columns: 220px minmax(0, 1fr); border: 1.5px solid var(--bdr); border-radius: 20px; background: var(--panel); overflow: hidden; }
+.row { display: grid; grid-template-columns: 260px minmax(0, 1fr); border: 1.5px solid var(--bdr); border-radius: 20px; background: var(--panel); overflow: hidden; }
 .side { display: flex; gap: 16px; align-items: center; padding: 22px; border-right: 1.5px solid var(--bdr); background: var(--gray); }
-.side h2 { font-size: 26px; letter-spacing: -.02em; line-height: 1.05; }
+.side h2 { overflow-wrap: anywhere; font-size: 24px; letter-spacing: -.02em; line-height: 1.05; }
 .side .state { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
 .side .count { font-size: 12.5px; color: var(--mu); }
 .thermo { width: 46px; height: 150px; flex: none; }
@@ -102,6 +104,12 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .conv { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 8px 20px; padding: 16px 22px; align-items: center; }
 .conv + .conv { border-top: 1.5px solid var(--bdr); }
 .conv .head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.plat { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 2px 10px 2px 8px;
+  border: 1.5px solid var(--bdr); border-radius: 100px; white-space: nowrap; }
+.plat::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--plat); }
+.plat.google { --plat: var(--p-google); }
+.plat.meta { --plat: var(--p-meta); }
+.side .count b { color: var(--ink); font-weight: 700; }
 .conv .name { font-family: var(--font-mono); font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
 .conv .sub { font-size: 12px; color: var(--mu); }
 .conv .why { margin: 4px 0 0; font-size: 13.5px; color: var(--mu); max-width: 64ch; }
@@ -118,6 +126,8 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
 .spark .val { font-family: var(--font-display); font-size: 20px; line-height: 1; letter-spacing: -.02em; }
 .spark .val small { font-family: var(--font-body); font-size: 11.5px; color: var(--mu); letter-spacing: 0; }
 
+.scale { margin: -12px 0 0; font-size: 13px; color: var(--mu); max-width: 90ch; }
+.scale b { color: var(--ink); font-weight: 500; }
 .foot { font-size: 12.5px; color: var(--mu); border-top: 1.5px solid var(--bdr); padding-top: 14px; max-width: 80ch; }
 
 @media (max-width: 760px) {
@@ -149,6 +159,8 @@ h1, h2 { font-family: var(--font-display); font-weight: 700; margin: 0; text-wra
     <div><span class="tag rojo" data-shape="rojo"></span><span><b>Revisar ya</b><span class="t">Está en cero con tráfico. Probablemente se rompió el evento o el formulario.</span></span></div>
   </section>
 
+  <p class="scale">El termómetro de cada cliente sube según qué parte de sus conversiones tiene alertas (una en rojo cuenta entera, una en amarillo cuenta media): hasta 20% queda en <b>bien</b>, hasta 50% en <b>atención</b> y arriba de eso en <b>crítico</b>. Las alertas se muestran siempre, aunque el cliente esté bien.</p>
+
   <main id="clients" class="wrap" style="gap:18px"></main>
 
   <p class="foot">Solo lectura: se consulta SeePM y no se modifica nada en las cuentas. Se compara la última semana (martes a lunes) con las 4 anteriores, ajustando por clics, y los últimos 3 días contra el resto de la semana. Google cuenta por fecha de conversión y los eventos de app pueden llegar con un par de días de demora. Gris: volumen demasiado bajo para leer.</p>
@@ -163,7 +175,7 @@ const SHAPE = {
   rojo: '<path d="M5 0L10 9H0z"/>',
   gris: '<rect y="3.5" width="10" height="3" rx="1.5"/>',
 };
-const FILL = { verde: 0.3, amarillo: 0.6, rojo: 0.93, gris: 0.12 };
+const CLIENT_LABEL = { verde: "Bien", amarillo: "Atención", rojo: "Crítico" };
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const ddmm = iso => { const [, m, d] = iso.split("-"); return `${d}/${m}`; };
 const fmt = v => Math.round(v).toLocaleString("es-AR");
@@ -174,13 +186,15 @@ document.querySelectorAll("[data-shape]").forEach(el => {
   el.outerHTML = tag(lvl);
 });
 
-function thermo(level) {
-  const top = 8, bottom = 112, h = (bottom - top) * FILL[level];
-  return `<svg class="thermo" viewBox="0 0 46 150" role="img" aria-label="Termómetro: ${LABEL[level]}">
+// La columna sube con la temperatura: 0% abajo, 100% arriba. Marcas en 20% y 50%, donde cambia el color.
+const TEMP_Y = t => 0.08 + 0.92 * Math.min(1, t);
+function thermo(level, temp) {
+  const top = 8, bottom = 112, h = (bottom - top) * TEMP_Y(temp);
+  return `<svg class="thermo" viewBox="0 0 46 150" role="img" aria-label="Termómetro: ${CLIENT_LABEL[level]}, ${Math.round(temp * 100)}% con alertas">
     <rect class="glass" x="14" y="2" width="18" height="118" rx="9"/>
     <circle class="glass" cx="23" cy="130" r="16"/>
-    <line class="tick" x1="34" x2="40" y1="${bottom - (bottom - top) * 0.33}" y2="${bottom - (bottom - top) * 0.33}"/>
-    <line class="tick" x1="34" x2="40" y1="${bottom - (bottom - top) * 0.66}" y2="${bottom - (bottom - top) * 0.66}"/>
+    <line class="tick" x1="34" x2="40" y1="${bottom - (bottom - top) * TEMP_Y(0.2)}" y2="${bottom - (bottom - top) * TEMP_Y(0.2)}"/>
+    <line class="tick" x1="34" x2="40" y1="${bottom - (bottom - top) * TEMP_Y(0.5)}" y2="${bottom - (bottom - top) * TEMP_Y(0.5)}"/>
     <rect class="mercury ${level}" x="19" y="${bottom - h}" width="8" height="${h + 14}" rx="4"/>
     <circle class="mercury ${level}" cx="23" cy="130" r="11"/>
   </svg>`;
@@ -206,8 +220,8 @@ function spark(item) {
 function conv(item) {
   return `<article class="conv">
     <div>
-      <div class="head">${tag(item.level, item.title)}<span class="name">${esc(item.name)}</span></div>
-      <div class="sub">${esc(item.platform)} · ${esc(item.group)} · ${esc(item.campaigns.join(", "))}</div>
+      <div class="head">${tag(item.level, item.title)}<span class="plat ${item.platform === "Meta" ? "meta" : "google"}">${esc(item.platform)}</span><span class="name">${esc(item.name)}</span></div>
+      <div class="sub">${esc(item.group)} · ${esc(item.campaigns.join(", "))}</div>
       <p class="why">${esc(item.why)}${item.note ? ` <strong>${esc(item.note)}</strong>` : ""}</p>
     </div>
     <div class="spark">
@@ -224,11 +238,14 @@ function render() {
   document.getElementById("week").textContent = `Semana del ${ddmm(DATA.week[0])} al ${ddmm(DATA.week[1])}`;
   document.getElementById("next").textContent = `Próxima actualización: martes ${ddmm(DATA.next)}`;
   document.getElementById("clients").innerHTML = DATA.clients.map(c => {
-    const counts = ["rojo", "amarillo", "verde", "gris"].filter(l => c.items.some(i => i.level === l))
-      .map(l => `${c.items.filter(i => i.level === l).length} ${LABEL[l].toLowerCase()}`).join(" · ");
+    const alerts = ["rojo", "amarillo"].filter(l => c.items.some(i => i.level === l))
+      .map(l => tag(l, `${c.items.filter(i => i.level === l).length} ${LABEL[l].toLowerCase()}`)).join("");
+    const gray = c.items.filter(i => i.level === "gris").length;
     return `<section class="row" aria-label="${esc(c.client)}">
-      <div class="side">${thermo(c.level)}
-        <div><h2>${esc(c.client)}</h2><div class="state">${tag(c.level)}<span class="count">${counts}</span></div></div>
+      <div class="side">${thermo(c.level, c.temp)}
+        <div><h2>${esc(c.client)}</h2><div class="state">${tag(c.level, CLIENT_LABEL[c.level])}
+          <span class="count"><b>${c.healthy} de ${c.readable}</b> funcionando bien${gray ? ` · ${gray} sin lectura` : ""}</span>
+          ${alerts}</div></div>
       </div>
       <div class="convs">${c.items.map(conv).join("")}</div>
     </section>`;

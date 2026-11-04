@@ -45,8 +45,7 @@ Si Meta limita la cuenta, no reintentar: armar el termómetro con lo que haya y 
 ## Salida
 
 1. Guardar `data/<cliente>/<fecha de hoy>.json` con el formato del README (5 semanas por conversión, `daily` de la última semana si se leyó, `since` si la campaña arrancó en las últimas 2 semanas).
-2. `python3 pulso.py data/*/<fecha de hoy>.json -o out/auditoria.html --mail out/mail.html` (la versión mail es la misma página hecha con tablas, para Gmail y Outlook)
+2. `python3 pulso.py data/*/<fecha de hoy>.json -o out/auditoria.html`
 3. Republicar `out/auditoria.html` en el mismo artifact, https://claude.ai/artifact/BVkicQTuAconfx5Qs7pnj2 (pasar esa URL como `url`; no crear uno nuevo).
 4. Commit y push de `data/` en la rama de trabajo.
-5. Si la sesión tiene el conector de Gmail, mandar `out/mail.html` como cuerpo HTML a federico@zenda.com.ar y ariana@zenda.com.ar, con asunto "Termómetro de conversiones · semana del <dd/mm> al <dd/mm>".
-6. Responder con una línea por cliente: su color y, si no es verde, qué conversión lo explica.
+5. Responder con una línea por cliente: su color y, si no es verde, qué conversión lo explica.

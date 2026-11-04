@@ -2,7 +2,7 @@
 """Auditoría semanal de conversiones: arma el termómetro de cada cliente.
 
 Uso:
-  python3 pulso.py data/<cliente>/<fecha>.json [más clientes...] -o out/auditoria.html
+  python3 pulso.py data/<cliente>/<fecha>.json [más clientes...] -o out/auditoria.html [--mail out/mail.html]
 
 Cada snapshot trae 5 semanas por conversión (4 de referencia + la última) y, si se
 leyó, el detalle diario de la última semana. No se conecta a ninguna plataforma.
@@ -123,6 +123,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("snapshots", nargs="+", type=Path)
     ap.add_argument("-o", "--out", type=Path, default=Path("out/auditoria.html"))
+    ap.add_argument("--mail", type=Path, help="también guarda la versión mail (HTML con tablas)")
     args = ap.parse_args()
 
     data = build(args.snapshots)
@@ -132,6 +133,9 @@ def main():
             .replace("/*__DATA__*/null", payload))
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(html)
+    if args.mail:
+        import mail
+        args.mail.write_text(mail.render(data))
 
     for c in data["clients"]:
         print(f"{c['client']}: {c['level']}")

@@ -1,9 +1,9 @@
 ---
-name: pulso-semanal
+name: termometro-conversiones
 description: Revisión semanal de solo lectura de las conversiones por las que optimizan las campañas de Google Ads y Meta de cada cliente en clients.json, para detectar caídas de medición o del sitio. Lee por SeePM, arma un snapshot y actualiza el termómetro de conversiones (artifact). Usar cuando pidan la auditoría semanal, el termómetro, revisar si se rompió alguna conversión o correr el control de conversiones.
 ---
 
-# Auditoría semanal de conversiones
+# Termómetro de conversiones
 
 Solo lectura. Usar únicamente `list_accounts`, `brain_read`, `get_client_card` y `read_platform_data` de SeePM. Nunca `change_platform`, `run_seepm_change` ni `brain_write`: `.claude/settings.json` las bloquea igual.
 
@@ -48,6 +48,16 @@ Sumar por semana de martes a lunes. Los clics de cada acción son los de las cam
 3. Solo si una campaña devuelve `indicator: "mixed"` (optimiza por eventos distintos en cada conjunto): repetir esa cuenta con `level: "adset"` para las 2 últimas semanas.
 
 Si Meta limita la cuenta, no reintentar: armar el termómetro con lo que haya y anotarlo en la respuesta.
+
+## Reglas y notas
+
+- Los colores los calcula `pulso.py`, no se deciden a mano. Las reglas están explicadas en el README:
+  - verde, amarillo, rojo y gris por conversión;
+  - el termómetro del cliente según qué parte de sus conversiones tiene alertas;
+  - la comparación por volumen cuando el tráfico se duplica;
+  - la caída de los últimos 3 días.
+- Si una alerta tiene una causa ya conocida (por ejemplo, el píxel de Prevención Salud bloqueado por Meta), agregarla en el campo `note` de esa conversión en el snapshot. El termómetro la muestra en la tarjeta y en el resumen.
+- Avisos por cliente que no son alertas van en `notes` del snapshot (por ejemplo, que la cuenta de Meta de Chubb no da permiso de lectura).
 
 ## Pods
 

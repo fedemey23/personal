@@ -6,7 +6,7 @@ No ejecuta cambios en las cuentas. Lee los datos a través de SeePM y actualiza 
 
 ## Cómo funciona
 
-1. **Lectura**: la skill [`pulso-semanal`](.claude/skills/pulso-semanal/SKILL.md) recorre los clientes de `clients.json`, toma solo los eventos de optimización de las campañas con entrega (o los que el equipo fijó para ese cliente) y baja 5 semanas de conversiones y clics, más el detalle diario de la última. Guarda un snapshot en `data/<cliente>/<fecha>.json`.
+1. **Lectura**: la skill [`termometro-conversiones`](.claude/skills/termometro-conversiones/SKILL.md) recorre los clientes de `clients.json`, toma solo los eventos de optimización de las campañas con entrega (o los que el equipo fijó para ese cliente) y baja 5 semanas de conversiones y clics, más el detalle diario de la última. Guarda un snapshot en `data/<cliente>/<fecha>.json`.
 2. **Termómetro** (`pulso.py` + `template.html`, sin dependencias): evalúa cada conversión y arma `out/auditoria.html` con la estética de Zenda (tipografías en `assets/zenda-fonts.css`). La skill la republica en el mismo artifact todos los martes.
 
 ```bash

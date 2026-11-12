@@ -1,0 +1,95 @@
+{
+ "client": "Chubb",
+ "pod": "Ari - Milly",
+ "seepm_client_id": "ef979fcd-f29f-47d9-bc71-91b54042d4c5",
+ "week": [
+  "2026-11-03",
+  "2026-11-09"
+ ],
+ "week_starts": [
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27",
+  "2026-11-03"
+ ],
+ "notes": [
+  "Meta (AR D2C Travel) sin permiso de lectura para SeePM: no se revisa."
+ ],
+ "conversions": [
+  {
+   "id": "gads:purchase",
+   "name": "purchase (web)",
+   "platform": "google_ads",
+   "account_id": "5617408542",
+   "group": "Venta",
+   "campaigns": [
+    "AR D2C Travel"
+   ],
+   "weeks": [
+    0,
+    0,
+    0,
+    1,
+    1
+   ],
+   "clicks": [
+    156,
+    171,
+    145,
+    148,
+    153
+   ],
+   "note": "Es la conversión que importa, pero las campañas no ofertan por ella.",
+   "label": "Compra de seguro de viaje",
+   "campaign_scope": "account"
+  },
+  {
+   "id": "gads:generated_quotation",
+   "name": "generated_quotation",
+   "platform": "google_ads",
+   "account_id": "5617408542",
+   "group": "Cotización",
+   "campaigns": [
+    "AR D2C Travel"
+   ],
+   "weeks": [
+    26,
+    24,
+    38,
+    23,
+    36
+   ],
+   "clicks": [
+    156,
+    171,
+    145,
+    148,
+    153
+   ],
+   "note": "Es por la que ofertan las campañas de Google.",
+   "label": "Cotización generada",
+   "campaign_scope": "account",
+   "daily": {
+    "conv": [
+     6,
+     6,
+     6,
+     4.5,
+     3.5,
+     7,
+     3
+    ],
+    "clicks": [
+     23,
+     20,
+     16,
+     17,
+     36,
+     26,
+     15
+    ]
+   }
+  }
+ ]
+}

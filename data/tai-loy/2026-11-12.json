@@ -1,0 +1,98 @@
+{
+ "client": "Tai Loy",
+ "pod": "Mate - Lu",
+ "seepm_client_id": "5e4cd2ad-b020-47e9-9682-ceb316b5ee2f",
+ "week": [
+  "2026-11-03",
+  "2026-11-09"
+ ],
+ "week_starts": [
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27",
+  "2026-11-03"
+ ],
+ "notes": [
+  "Bolivia está apagada por decisión del cliente.",
+  "Sigue el Cyber Wow en Perú: el tráfico alto es esperable."
+ ],
+ "conversions": [
+  {
+   "id": "gads:compra",
+   "name": "Compra",
+   "platform": "google_ads",
+   "account_id": "7352725456",
+   "group": "Ecommerce Perú",
+   "campaigns": [
+    "Tai Loy Peru"
+   ],
+   "weeks": [
+    869.1,
+    1055.7,
+    1248.0,
+    1817.1,
+    2063.3
+   ],
+   "clicks": [
+    105908,
+    191006,
+    223468,
+    546907,
+    354149
+   ],
+   "note": "Las campañas también ofertan por Page view.",
+   "label": "Compra online · Perú",
+   "campaign_scope": "account",
+   "daily": {
+    "conv": [
+     364.2,
+     339.7,
+     402.3,
+     284.0,
+     224.5,
+     278.3,
+     170.3
+    ],
+    "clicks": [
+     49915,
+     48347,
+     43772,
+     49858,
+     54588,
+     58138,
+     49531
+    ]
+   }
+  },
+  {
+   "id": "meta:purchase",
+   "name": "Purchase (píxel)",
+   "platform": "meta_ads",
+   "account_id": "act_250928753709212",
+   "group": "Ecommerce",
+   "campaigns": [
+    "Advantage+ V2",
+    "Cyber TAI",
+    "Cyber Wow",
+    "Juguetes",
+    "Tecno Ticket Alto"
+   ],
+   "weeks": [
+    143,
+    193,
+    297,
+    947,
+    818
+   ],
+   "clicks": [
+    29208,
+    40929,
+    63013,
+    163659,
+    93297
+   ],
+   "label": "Compra online"
+  }
+ ]
+}

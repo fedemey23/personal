@@ -1,0 +1,89 @@
+{
+ "client": "Prevención Retiro",
+ "seepm_client_id": "337b2cea-a6e2-4721-ba2f-823d5963294f",
+ "week": [
+  "2026-11-03",
+  "2026-11-09"
+ ],
+ "week_starts": [
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27",
+  "2026-11-03"
+ ],
+ "conversions": [
+  {
+   "id": "meta:448123337694974",
+   "name": "PR - Contacto - Cotizacion - Formulario Enviado V2",
+   "platform": "meta_ads",
+   "account_id": "act_502914543864282",
+   "group": "Cotización",
+   "campaigns": [
+    "Test - PR_FB_Conversiones_2022_Performance - v2"
+   ],
+   "weeks": [
+    55,
+    53,
+    29,
+    22,
+    30
+   ],
+   "clicks": [
+    647,
+    654,
+    570,
+    639,
+    587
+   ],
+   "label": "Formulario de cotización enviado"
+  },
+  {
+   "id": "gads:365195478",
+   "name": "Pixel Google Ads - Contacto",
+   "platform": "google_ads",
+   "account_id": "5324690639",
+   "group": "Cotización",
+   "campaigns": [
+    "PR Search Brand, Not Brand y PMax"
+   ],
+   "weeks": [
+    35,
+    28,
+    25,
+    15,
+    22
+   ],
+   "clicks": [
+    1638,
+    1389,
+    1405,
+    1228,
+    1335
+   ],
+   "label": "Formulario de contacto",
+   "campaign_count": 3,
+   "daily": {
+    "conv": [
+     3,
+     8,
+     5,
+     2,
+     0,
+     4,
+     0
+    ],
+    "clicks": [
+     227,
+     170,
+     247,
+     220,
+     146,
+     148,
+     177
+    ]
+   }
+  }
+ ],
+ "pod": "Ari - Milly"
+}

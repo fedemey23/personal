@@ -1,0 +1,97 @@
+{
+ "client": "Almarena",
+ "pod": "Mate - Lu",
+ "seepm_client_id": "7cbfe204-a934-45cd-b67b-af4f44c95b88",
+ "week": [
+  "2026-11-03",
+  "2026-11-09"
+ ],
+ "week_starts": [
+  "2026-10-06",
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27",
+  "2026-11-03"
+ ],
+ "conversions": [
+  {
+   "id": "gads:compra_zenda",
+   "name": "Compra (Zenda)",
+   "platform": "google_ads",
+   "account_id": "3580299114",
+   "group": "Reservas",
+   "campaigns": [
+    "Almarena"
+   ],
+   "since": "2026-10-23",
+   "weeks": [
+    0,
+    0,
+    1,
+    2,
+    3
+   ],
+   "clicks": [
+    5431,
+    5831,
+    5219,
+    4935,
+    5352
+   ],
+   "label": "Reserva en el motor web",
+   "campaign_scope": "account"
+  },
+  {
+   "id": "meta:messaging",
+   "name": "Conversaciones iniciadas",
+   "platform": "meta_ads",
+   "account_id": "act_466429697126276",
+   "group": "Mensajes",
+   "campaigns": [
+    "Promo Mar y Bosque",
+    "Preventa Verano",
+    "Eventos Especiales"
+   ],
+   "weeks": [
+    178,
+    204,
+    171,
+    124,
+    258
+   ],
+   "clicks": [
+    1121,
+    1069,
+    929,
+    656,
+    1326
+   ],
+   "label": "Conversación por mensaje"
+  },
+  {
+   "id": "meta:add_to_cart",
+   "name": "Add to cart",
+   "platform": "meta_ads",
+   "account_id": "act_466429697126276",
+   "group": "Motor web",
+   "campaigns": [
+    "AlwaysOn – Motor Web"
+   ],
+   "weeks": [
+    5,
+    4,
+    2,
+    4,
+    1
+   ],
+   "clicks": [
+    230,
+    149,
+    163,
+    190,
+    111
+   ],
+   "label": "Agregar al carrito del motor web"
+  }
+ ]
+}

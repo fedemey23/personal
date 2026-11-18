@@ -1,0 +1,320 @@
+{
+ "client": "Pickit",
+ "seepm_client_id": "581c8402-e96e-4cb3-92e6-6d6bbfa865a1",
+ "week": [
+  "2026-11-10",
+  "2026-11-16"
+ ],
+ "week_starts": [
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27",
+  "2026-11-03",
+  "2026-11-10"
+ ],
+ "conversions": [
+  {
+   "id": "gads:7732517673",
+   "name": "AR - Sellers - Lead Calificado",
+   "platform": "google_ads",
+   "account_id": "6727245662",
+   "group": "B2B Sellers AR",
+   "campaigns": [
+    "AR_Flex_SameDay",
+    "AR_Hunting_ECommerce",
+    "AR_Hunting_Fintech"
+   ],
+   "weeks": [
+    4,
+    5,
+    4,
+    2,
+    7
+   ],
+   "clicks": [
+    267,
+    448,
+    218,
+    180,
+    348
+   ],
+   "label": "Lead calificado de sellers · Argentina",
+   "daily": {
+    "conv": [
+     2,
+     0,
+     1,
+     0,
+     0,
+     1,
+     3
+    ],
+    "clicks": [
+     64,
+     57,
+     65,
+     47,
+     34,
+     25,
+     56
+    ]
+   }
+  },
+  {
+   "id": "gads:7735155969",
+   "name": "Lead calificado - MX",
+   "platform": "google_ads",
+   "account_id": "6727245662",
+   "group": "B2B Sellers MX",
+   "campaigns": [
+    "MX_Banca&Fintech",
+    "MX_Ecommerce&Shopify #2",
+    "MX_AgenciasUGC&Kits #2"
+   ],
+   "weeks": [
+    2,
+    6,
+    2,
+    0,
+    0
+   ],
+   "clicks": [
+    262,
+    361,
+    429,
+    416,
+    362
+   ],
+   "label": "Lead calificado de sellers · México",
+   "daily": {
+    "conv": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "clicks": [
+     85,
+     55,
+     54,
+     57,
+     29,
+     31,
+     51
+    ]
+   },
+   "note": "La campaña nueva MX_B2B registró 10 leads generales (MX - Sellers - Lead) en la semana y ninguno calificado."
+  },
+  {
+   "id": "gads:7737562471",
+   "name": "PE - Sellers - Lead Calificado",
+   "platform": "google_ads",
+   "account_id": "6727245662",
+   "group": "B2B Sellers PE",
+   "campaigns": [
+    "PE_Latam_Ecommerce&Retail"
+   ],
+   "weeks": [
+    0,
+    0,
+    1,
+    1,
+    0
+   ],
+   "clicks": [
+    12,
+    8,
+    160,
+    86,
+    28
+   ],
+   "last_seen": "2026-09-10",
+   "label": "Lead calificado de sellers · Perú",
+   "note": "PE Latam corrió solo del 10/11 al 12/11."
+  },
+  {
+   "id": "meta:lead_calificado_puntos_ar",
+   "name": "lead_calificado_puntos_ar",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "Puntos AR",
+   "campaigns": [
+    "AR_Puntos ReemplazoML - CONVERSIONES",
+    "AR_Puntos SAMEDAY - CONVERSIONES"
+   ],
+   "since": "2026-10-06",
+   "weeks": [
+    207,
+    179,
+    213,
+    179,
+    234
+   ],
+   "clicks": [
+    2293,
+    2072,
+    2356,
+    2150,
+    3132
+   ],
+   "label": "Lead calificado de Puntos · Argentina"
+  },
+  {
+   "id": "meta:ar_tn_onboarding_conversion",
+   "name": "ar_tn_onboarding_conversion",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "C2C Tienda Nube AR",
+   "campaigns": [
+    "AR_C2C_TiendaNube"
+   ],
+   "weeks": [
+    5,
+    7,
+    12,
+    7,
+    9
+   ],
+   "clicks": [
+    563,
+    869,
+    806,
+    649,
+    643
+   ],
+   "label": "Onboarding Tienda Nube (C2C)"
+  },
+  {
+   "id": "meta:sellers_lead_calificado_ar",
+   "name": "sellers_lead_calificado_ar",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "B2B Sellers AR",
+   "campaigns": [
+    "AR_Hunting&SameDay_H2"
+   ],
+   "weeks": [
+    1,
+    1,
+    2,
+    2,
+    3
+   ],
+   "clicks": [
+    197,
+    181,
+    189,
+    180,
+    184
+   ],
+   "label": "Lead calificado de sellers · Argentina"
+  },
+  {
+   "id": "meta:sellers_lead_calificado_mx",
+   "name": "sellers_lead_calificado_mx",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "B2B Sellers MX",
+   "campaigns": [
+    "MX_HUNTING_H2"
+   ],
+   "weeks": [
+    1,
+    1,
+    0,
+    0,
+    0
+   ],
+   "clicks": [
+    29,
+    69,
+    23,
+    10,
+    7
+   ],
+   "label": "Lead calificado de sellers · México"
+  },
+  {
+   "id": "meta:sellers_lead_calificado_pe",
+   "name": "sellers_lead_calificado_pe",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "B2B Sellers PE",
+   "campaigns": [
+    "PE_B2B_H2_FB_Conversiones_2026"
+   ],
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "clicks": [
+    26,
+    28,
+    33,
+    19,
+    50
+   ],
+   "label": "Lead calificado de sellers · Perú"
+  },
+  {
+   "id": "meta:lead_calificado_camionetas_mx_pickit_ar",
+   "name": "lead_calificado_camionetas_mx",
+   "label": "Lead calificado Rentals · México",
+   "platform": "meta_ads",
+   "account_id": "act_280747187560509",
+   "group": "Pickers Rentals MX",
+   "campaigns": [
+    "MX_Rentals_FB_Conversiones_2026_Geos_v2"
+   ],
+   "since": "2026-11-03",
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    58
+   ],
+   "clicks": [
+    0,
+    0,
+    0,
+    3387,
+    14029
+   ],
+   "note": "Rentals ahora corre solo en la cuenta pickit - AR. Empezó a registrar el evento esta semana, tras una semana en cero; convierte 0,4% de los clics, contra 2,2% que tenía en la cuenta pickers - AR."
+  },
+  {
+   "id": "meta:mobile_app_install_mx",
+   "name": "mobile_app_install",
+   "label": "Instalación de la app Pickers · México",
+   "platform": "meta_ads",
+   "account_id": "act_4901263773324478",
+   "group": "Pickers MX",
+   "campaigns": [
+    "MX_Pickers_FB_Onboarding_2026_Performance - Installs_NEX"
+   ],
+   "since": "2026-11-10",
+   "weeks": [
+    0,
+    0,
+    0,
+    0,
+    170
+   ],
+   "clicks": [
+    0,
+    0,
+    0,
+    0,
+    697
+   ]
+  }
+ ],
+ "pod": "Ari - Milly"
+}

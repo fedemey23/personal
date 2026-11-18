@@ -1,0 +1,112 @@
+{
+ "client": "Banco del Sol",
+ "seepm_client_id": "c741ab8c-53ad-4f63-b790-f79acb606bdb",
+ "week": [
+  "2026-11-10",
+  "2026-11-16"
+ ],
+ "week_starts": [
+  "2026-10-13",
+  "2026-10-20",
+  "2026-10-27",
+  "2026-11-03",
+  "2026-11-10"
+ ],
+ "conversions": [
+  {
+   "id": "gads:ob_pass_create_success_android",
+   "name": "ob_pass_create_success (Android)",
+   "platform": "google_ads",
+   "account_id": "2793794445",
+   "group": "Onboarding app",
+   "campaigns": [
+    "AQ_AO_Installs_UAC_AppInstalls_Automated V4 | TROAS"
+   ],
+   "since": "2026-10-23",
+   "weeks": [
+    8,
+    104,
+    268,
+    129,
+    340
+   ],
+   "clicks": [
+    0,
+    848,
+    2226,
+    1514,
+    3541
+   ],
+   "label": "Onboarding completo en la app (Android)",
+   "daily": {
+    "conv": [
+     44,
+     43,
+     31,
+     73,
+     29,
+     38,
+     82
+    ],
+    "clicks": [
+     184,
+     321,
+     625,
+     698,
+     575,
+     483,
+     655
+    ]
+   }
+  },
+  {
+   "id": "gads:462131657",
+   "name": "0. Web click to download",
+   "platform": "google_ads",
+   "account_id": "1372661172",
+   "group": "Web",
+   "campaigns": [
+    "CO_BDS_DemandGen_Conversiones_2025_Performance",
+    "CO_AO_..._Pros_Brand",
+    "CO_AO_..._Pros_Category_Broad"
+   ],
+   "since": "2026-10-23",
+   "weeks": [
+    6,
+    5238,
+    16383,
+    7946,
+    9032
+   ],
+   "clicks": [
+    0,
+    29597,
+    53324,
+    25443,
+    26797
+   ],
+   "label": "Clic para descargar la app (web)",
+   "daily": {
+    "conv": [
+     1300,
+     1218,
+     1322,
+     1265,
+     1219,
+     1267,
+     1441
+    ],
+    "clicks": [
+     4178,
+     3756,
+     3838,
+     3623,
+     3539,
+     3614,
+     4249
+    ]
+   }
+  }
+ ],
+ "pod": "Ari - Milly"
+}
